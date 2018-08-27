@@ -22,8 +22,8 @@ class Example(QtWidgets.QWidget):
         self.IMG_HEIGHT = 700
         self.IMG_WIDTH = 700
         self.IMG_QUALITY = 3
-        self.IMG_FILENAME = 'qr_code6.jpg'
         self.IMG_FOLDER = 'images'
+        self.IMG_FILEFOLDER = self.load_latest_image(self.IMG_FOLDER)
         
         self.initUI()
         
@@ -37,12 +37,11 @@ class Example(QtWidgets.QWidget):
         auto_detect_output = self.auto_detect_camera()
         auto_detect = QtWidgets.QLabel(auto_detect_output)
         
-        latest_image = self.load_latest_image(self.IMG_FOLDER)
-        
         qr_code_output = self.get_qr_code()
         qr_code = QtWidgets.QLabel('QR Code: %s'%qr_code_output)
+        img_title = QtWidgets.QLabel('Latest image in folder: %s'%os.path.join(os.getcwd(),self.IMG_FOLDER))
         img = QtWidgets.QLabel(self)
-        img_resized = QtGui.QPixmap(os.path.join(self.IMG_FOLDER,self.IMG_FILENAME)).scaled(self.IMG_WIDTH, 
+        img_resized = QtGui.QPixmap(self.IMG_FILEFOLDER).scaled(self.IMG_WIDTH, 
                                                        self.IMG_HEIGHT, 
                                                        QtCore.Qt.KeepAspectRatio)
         img.setPixmap(img_resized)
@@ -61,17 +60,16 @@ class Example(QtWidgets.QWidget):
         grid.addWidget(auto_detect, 3, 0)
         grid.addWidget(takePhotoButton, 5, 0)
         grid.addWidget(qr_code, 4, 0)
-        grid.addWidget(img, 1, 1, 5, 1)
+        grid.addWidget(img_title, 1, 1)
+        grid.addWidget(img, 2, 1, 10, 1)
         
-        grid.addWidget(okButton, 6, 0)
-        grid.addWidget(cancelButton, 6, 1)
+        grid.addWidget(okButton, 12, 0)
+        grid.addWidget(cancelButton, 12, 1)
         
         self.setLayout(grid) 
         
-        self.setGeometry(300, 300, 350, 300)
-        self.center()
         self.setWindowTitle('Upload Image to Database')    
-        self.setWindowIcon(QtGui.QIcon('icon2.png')) 
+        self.setWindowIcon(QtGui.QIcon('icon.png')) 
         self.show()
 
     def auto_detect_camera(self):
@@ -84,28 +82,20 @@ class Example(QtWidgets.QWidget):
     def load_latest_image(self, image_folder):
         images = os.listdir(image_folder)
         latest_image = max([os.path.join(image_folder, image) for image in images], key=os.path.getctime)
-        print(latest_image)
-        return 0
-        
+        return latest_image
     
     def take_photo(self):
         print('Photo taken')
         return 0
 
     def get_qr_code(self):
-        decoded_list = pyzbar.decode(cv2.imread(os.path.join(self.IMG_FOLDER,self.IMG_FILENAME)))
+        decoded_list = pyzbar.decode(cv2.imread(self.IMG_FILEFOLDER))
         for decoded in decoded_list:
             if decoded.type == 'QRCODE':
                 return decoded.data
         else:
             self.warn('Error xkcd1237: Qr code not found in image!')
             return ''
-
-    def center(self):
-        qr = self.frameGeometry()
-        cp = QtWidgets.QDesktopWidget().availableGeometry().center()
-        qr.moveCenter(cp)
-        self.move(qr.topLeft())
 
     def closeEvent(self, event):
         #reply = QtGui.QMessageBox.question(self, 'Message',
