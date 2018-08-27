@@ -9,9 +9,12 @@ import cv2
 import sys
 import warnings
 import subprocess
+from apscheduler.schedulers.background import BackgroundScheduler
 
-from pyzbar import pyzbar
+from time import sleep
 from PyQt5 import QtGui, QtCore, QtWidgets
+from pyzbar import pyzbar
+
 
 #_fromUtf8 = QtCore.QString.fromUtf8
 
@@ -24,10 +27,13 @@ class Example(QtWidgets.QWidget):
         self.IMG_QUALITY = 2
         self.IMG_FOLDER = 'images'
         self.IMG_FILEFOLDER = self.load_latest_image(self.IMG_FOLDER)
-        print(self.IMG_FILEFOLDER)
+        
         self.setImgQuality(self.IMG_QUALITY)
+        self.sched = BackgroundScheduler()
         
         self.initUI()
+        self.sched.add_job(self.update_preview, 'interval', seconds=1)
+        self.sched.start()
         
     def initUI(self):       
         inst_title = QtWidgets.QLabel('Instructions')
@@ -49,6 +55,9 @@ class Example(QtWidgets.QWidget):
         okButton = QtWidgets.QPushButton("Save and Send to Database")
         cancelButton = QtWidgets.QPushButton("Cancel")
 
+        
+        
+
         self.grid = QtWidgets.QGridLayout()
         self.grid.setSpacing(10)
 
@@ -68,6 +77,11 @@ class Example(QtWidgets.QWidget):
         self.setWindowIcon(QtGui.QIcon('icon.png')) 
         self.show()
         self.display_latest_img()
+        self.update_preview()
+        sleep(10)
+        self.update_preview()
+        
+        
         
     def display_latest_img(self):
         self.IMG_FILEFOLDER = self.load_latest_image(self.IMG_FOLDER)
@@ -81,6 +95,19 @@ class Example(QtWidgets.QWidget):
         self.grid.addWidget(img, 2, 1, 10, 1)
         self.setLayout(self.grid)
         self.show()
+        
+    def update_preview(self):
+        subprocess.check_output(['gphoto2','--capture-preview','--force-overwrite'])
+        preview_resized = QtGui.QPixmap('capture_preview.jpg').scaled(300, 
+                                                       300, 
+                                                       QtCore.Qt.KeepAspectRatio)
+        preview = QtWidgets.QLabel(self)
+        preview.setPixmap(preview_resized)
+        preview.setMinimumSize(300, 300)
+        self.grid.addWidget(preview, 6, 0)
+        self.setLayout(self.grid)
+        self.show()
+        
         
 
     def auto_detect_camera(self):
@@ -126,7 +153,8 @@ class Example(QtWidgets.QWidget):
         #if reply == QtGui.QMessageBox.Yes:
         #    event.accept()
         #else:
-        #    event.ignore()        
+        #    event.ignore() 
+        self.sched.shutdown()
         event.accept()
         
     def warn(self, msg):
