@@ -11,11 +11,11 @@ import warnings
 import subprocess
 
 from pyzbar import pyzbar
-from PyQt4 import QtGui, QtCore
+from PyQt5 import QtGui, QtCore, QtWidgets
 
-_fromUtf8 = QtCore.QString.fromUtf8
+#_fromUtf8 = QtCore.QString.fromUtf8
 
-class Example(QtGui.QWidget):
+class Example(QtWidgets.QWidget):
     
     def __init__(self):
         super(Example, self).__init__()
@@ -28,32 +28,32 @@ class Example(QtGui.QWidget):
         self.initUI()
         
     def initUI(self):       
-        inst_title = QtGui.QLabel('Instructions')
-        inst_desc = QtGui.QLabel('''These are the instructions. 
+        inst_title = QtWidgets.QLabel('Instructions')
+        inst_desc = QtWidgets.QLabel('''These are the instructions. 
                                       If you have any questions, 
                                       shoot roberta a mail: ngw861@alumni.ku.dk. 
                                       If it is urgent, call her: 91 93 20 26''')
        
         auto_detect_output = self.auto_detect_camera()
-        auto_detect = QtGui.QLabel(auto_detect_output)
+        auto_detect = QtWidgets.QLabel(auto_detect_output)
         
         latest_image = self.load_latest_image(self.IMG_FOLDER)
         
         qr_code_output = self.get_qr_code()
-        qr_code = QtGui.QLabel('QR Code: %s'%qr_code_output)
-        img = QtGui.QLabel(self)
-        img_resized = QtGui.QPixmap(_fromUtf8(os.path.join(self.IMG_FOLDER,self.IMG_FILENAME))).scaled(self.IMG_WIDTH, 
+        qr_code = QtWidgets.QLabel('QR Code: %s'%qr_code_output)
+        img = QtWidgets.QLabel(self)
+        img_resized = QtGui.QPixmap(os.path.join(self.IMG_FOLDER,self.IMG_FILENAME)).scaled(self.IMG_WIDTH, 
                                                        self.IMG_HEIGHT, 
                                                        QtCore.Qt.KeepAspectRatio)
         img.setPixmap(img_resized)
         img.setMinimumSize(self.IMG_WIDTH, self.IMG_HEIGHT)
 
-        takePhotoButton = QtGui.QPushButton("Take Photo")
+        takePhotoButton = QtWidgets.QPushButton("Take Photo")
         takePhotoButton.clicked.connect(self.take_photo)
-        okButton = QtGui.QPushButton("Save and Send to Database")
-        cancelButton = QtGui.QPushButton("Cancel")
+        okButton = QtWidgets.QPushButton("Save and Send to Database")
+        cancelButton = QtWidgets.QPushButton("Cancel")
 
-        grid = QtGui.QGridLayout()
+        grid = QtWidgets.QGridLayout()
         grid.setSpacing(10)
 
         grid.addWidget(inst_title, 1, 0, 1, 1)
@@ -103,7 +103,7 @@ class Example(QtGui.QWidget):
 
     def center(self):
         qr = self.frameGeometry()
-        cp = QtGui.QDesktopWidget().availableGeometry().center()
+        cp = QtWidgets.QDesktopWidget().availableGeometry().center()
         qr.moveCenter(cp)
         self.move(qr.topLeft())
 
@@ -120,7 +120,7 @@ class Example(QtGui.QWidget):
         
     def warn(self, msg):
         warnings.warn(msg)
-        warning = QtGui.QMessageBox()
+        warning = QtWidgets.QMessageBox()
         warning.setWindowTitle('Warning Encountered')
         warning.setText(msg)
         warning.exec_()
@@ -128,6 +128,6 @@ class Example(QtGui.QWidget):
 
 if __name__ == '__main__':
     QtCore.QCoreApplication.addLibraryPath(os.path.join(os.path.dirname(QtCore.__file__), "plugins"))
-    app = QtGui.QApplication(sys.argv)
+    app = QtWidgets.QApplication(sys.argv)
     ex = Example()
     sys.exit(app.exec_())
