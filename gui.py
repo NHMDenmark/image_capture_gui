@@ -8,17 +8,14 @@ import os
 import cv2
 import sys
 import rawpy
-import imutils
+import pprint
 import warnings
-import threading
 import subprocess
 
 from time import sleep
 from PyQt5 import QtGui, QtCore, QtWidgets
 from pyzbar import pyzbar
 from multiprocessing import Pool
-
-
 
 
 class basicGUI(QtWidgets.QWidget):
@@ -43,7 +40,6 @@ class basicGUI(QtWidgets.QWidget):
         warning.setText(msg)
         warning.exec_()
     
-        
     #def closeEvent(self, event):
         #reply = QtGui.QMessageBox.question(self, 'Message',
         #    "Are you sure to quit?", QtGui.QMessageBox.Yes | 
@@ -56,17 +52,17 @@ class basicGUI(QtWidgets.QWidget):
     
     
 class capturePreview(QtCore.QThread, basicGUI):
-
     def __init__(self):
         QtCore.QThread.__init__(self)
 
     def run(self):
         while( self.isRunning() ):
             try:
-                subprocess.check_output(['gphoto2','--capture-preview','--force-overwrite'])
-
+                pass
+                #self.commandLine(['gphoto2','--capture-preview','--force-overwrite'])
             except Exception as ex:
                 pass
+            
             sleep(1)
             #print('Updated Preview')
 
@@ -99,7 +95,30 @@ class configGUI(basicGUI):
         self.initUI()
     
     def initUI(self):
-        pass
+        row = 13
+        for option in self.configOptions.keys():
+            widget = QtWidgets.QLabel(self.configOptions[option]['Label'])
+            if option == '/main/capturesettings/shutterspeed':
+                widgetEdit = QtWidgets.QLineEdit()
+                widgetEdit.setText(self.configOptions[option]['Current'])
+                
+            elif self.configOptions[option]['Type'] in ['MENU','RADIO']:
+                widgetEdit = QtWidgets.QComboBox()
+                widgetEdit.addItems(self.configOptions[option]['Choices'])
+                widgetEdit.setCurrentIndex(self.getCurrentOptionIndex(option))
+                widgetEdit.currentIndexChanged.connect(lambda x: self.updateConfigIndex(config, choice))
+                
+            self.grid.addWidget(widget, row, 0)
+            self.grid.addWidget(widgetEdit, row, 1)
+            row += 1
+        self.setLayout(self.grid)
+
+    def setCurrent(self):
+        
+
+    def getCurrentOptionIndex(self, option):
+        return self.configOptions[option]['Choices'].index(
+                        self.configOptions[option]['Current'])
     
     def getConfigOptions(self):
         raw_config = self.commandLine(['gphoto2','--list-all-config'])
@@ -112,44 +131,35 @@ class configGUI(basicGUI):
                 name = line
                 config[name] = {}
                 config[name]['Choices'] = []
+                config[name]['Choice Indices'] = []
             elif line.startswith('Label:'):
-                config[name]['Label'] = line[6:]
+                config[name]['Label'] = line[7:]
             elif line.startswith('Readonly:'):
                 config[name]['Readonly'] = line[10:]
             elif line.startswith('Type:'):
                 config[name]['Type'] = line[6:]
             elif line.startswith('Current:'):
                 config[name]['Current'] = line[9:]
-                print(name, line, line[9:].split(' '))
-                config[name]['Current Index'] = int(config[name]['Current'].split(' ')[0])
             elif line.startswith('Choice:'):
-                choice = line[7:]#.split(' ')
+                choice = ' '.join(line[8:].split(' ')[1:])
+                choice_index = line[8:].split(' ')[0]
                 config[name]['Choices'] += [choice]
-                #config[name]['Choices'][choice[0]] = ' '.join(choice[1:])
+                config[name]['Choice Indices'] += [choice_index]
             elif line.startswith('Bottom:'):
                 config[name]['Bottom'] = line[8:]
             elif line.startswith('Top:'):
                 config[name]['Top'] = line[4:]
             elif line.startswith('Step:'):
                 config[name]['Step'] = line[4:]
-        print(config)
-        row = 13
-        for option in config.keys():
-            if config[option]['Type'] in ['MENU','RADIO']:
-                widget = QtWidgets.QLabel(config[option]['Label'])
-                widgetEdit = QtWidgets.QComboBox()
-                widgetEdit.addItems(config[option]['Choices'])
-                widgetEdit.setCurrentIndex(config[option]['Current Index'])
-                widgetEdit.currentIndexChanged.connect(lambda x: self.updateConfigIndex(config, choice))
-                self.grid.addWidget(widget, row, 0)
-                self.grid.addWidget(widgetEdit, row, 1)
-                row += 1
-        self.setLayout(self.grid)
+        pprint.pprint(config)
 
         return config
 
-    def updateConfigIndex(self, config, choice):
-        print(config, choice)
+    def updateConfigIndex(self, option, choice):
+        choice_index = self.configOptions[option]['Choices'].index(choice)
+        self.commandLine(['gphoto2','--set-config-index',option+'='+str(choice_index)])
+        self.configOptions = self.getConfigOptions()
+        self.setCurrent()
     
 
 
@@ -206,7 +216,7 @@ class imageViewGUI(basicGUI):
         super(imageViewGUI, self).__init__()
         self.IMG_HEIGHT = 500
         self.IMG_WIDTH = 700
-        self.IMG_QUALITY = 2
+        self.IMG_QUALITY = 4
         
         self.setImgQuality(self.IMG_QUALITY)
         self.IMG_FOLDER = 'images'
@@ -220,7 +230,8 @@ class imageViewGUI(basicGUI):
         if IMG_FORMAT == 'jpg':
             return cv2.imread(self.IMG_FILEFOLDER)
         elif IMG_FORMAT == 'arw':
-            return rawpy.imread(self.IMG_FILEFOLDER).postprocess()
+            with rawpy.imread(self.IMG_FILEFOLDER) as raw:
+                return raw.postprocess()
         else:
             self.warn('Image format in folder not understood.%s'%self.IMG_FORMAT)
     
@@ -246,6 +257,7 @@ class imageViewGUI(basicGUI):
                             '/main/capturesettings/imagequality=%s'%ImgQuality])
 
     def takePhoto(self):
+        #self.IMG_QUALITY = self.commandLine(['gphoto2','--get-config','/main/capturesettings/imagequality'])
         if int(self.IMG_QUALITY) in [0,1,2]:
             IMG_FORMAT = 'jpg'
         else:
@@ -315,10 +327,10 @@ class GUI(basicGUI):
         self.auto_detect_camera = autoDetectCameraGUI()
         self.live_view = liveViewGUI()
         self.image_view = imageViewGUI()
+        self.config = configGUI()
         self.initUI()
         
     def initUI(self):
-        #config = configGUI()
         
         self.setWindowTitle('Upload Image to Database')  
         self.setWindowIcon(QtGui.QIcon('icon.png')) 
@@ -330,7 +342,7 @@ class GUI(basicGUI):
         self.grid.addWidget(self.auto_detect_camera, 1, 0)
         self.grid.addWidget(self.live_view, 2, 0)
         self.grid.addWidget(self.image_view, 0, 1, 3, 1)
-        #self.grid.addWidget(config, 3, 0, 4, 1)
+        self.grid.addWidget(self.config, 3, 0, 4, 1)
         self.grid.addWidget(okButton, 4, 0)
         self.grid.addWidget(cancelButton, 4, 1)
         self.setLayout(self.grid)
@@ -339,11 +351,8 @@ class GUI(basicGUI):
         
 
 if __name__ == '__main__':
-    pool = Pool(processes=1)
     QtCore.QCoreApplication.addLibraryPath(os.path.join(os.path.dirname(QtCore.__file__), "plugins"))
     app = QtWidgets.QApplication(sys.argv)
     app.setWindowIcon(QtGui.QIcon('icon.png'))
     gui = GUI()
-    
-    pool.apply_async(gui.live_view.getNewPreview, range(100))
     sys.exit(app.exec_())
