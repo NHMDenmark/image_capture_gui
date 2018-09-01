@@ -10,12 +10,12 @@ import sys
 import rawpy
 import pprint
 import warnings
+import functools
 import subprocess
 
 from time import sleep
 from PyQt5 import QtGui, QtCore, QtWidgets
 from pyzbar import pyzbar
-from multiprocessing import Pool
 
 
 class basicGUI(QtWidgets.QWidget):
@@ -26,11 +26,19 @@ class basicGUI(QtWidgets.QWidget):
 
     def commandLine(self, args):
         assert isinstance(args,list)
+        
+        if ('captureThread' in globals()) & (args[0] == 'gphoto2'):
+            captureThread.pause()
+
         try:
             output = subprocess.check_output(args)
+            if ('captureThread' in globals()) & (args[0] == 'gphoto2'):
+                captureThread.resume()
             return output
         except Exception as ex:
             self.warn('Command %s failed. Exception: %s'%(' '.join(args), ex))
+            if ('captureThread' in globals()) & (args[0] == 'gphoto2'):
+                captureThread.resume()
             return ex
         
     def warn(self, msg):
@@ -49,22 +57,40 @@ class basicGUI(QtWidgets.QWidget):
         #    event.accept()
         #else:
         #    event.ignore()
+
+
+class ClickableIMG(QtWidgets.QLabel):
+    clicked = QtCore.pyqtSignal(str)
     
+    def mousePressEvent(self, event):
+        self.clicked.emit(self.objectName())
     
 class capturePreview(QtCore.QThread, basicGUI):
     def __init__(self):
         QtCore.QThread.__init__(self)
+        self.paused = False
 
     def run(self):
         while( self.isRunning() ):
-            try:
-                pass
-                #self.commandLine(['gphoto2','--capture-preview','--force-overwrite'])
-            except Exception as ex:
-                pass
+            if self.paused == False:
+                self.running = True
+                try:
+                    subprocess.check_output(['gphoto2','--capture-preview','--force-overwrite'])
+                except Exception as ex:
+                    pass
+                self.running = False
+                #print('Updated Preview')
+            sleep(2)
             
-            sleep(1)
-            #print('Updated Preview')
+    def pause(self):
+        self.paused = True
+        while self.running == True:
+            sleep(2)
+        return True
+        
+    def resume(self):
+        self.paused = False
+        
 
 
 class instructionsGUI(basicGUI):
@@ -87,34 +113,83 @@ class instructionsGUI(basicGUI):
         self.setLayout(self.grid)
         
         
+class openConfigGUI(basicGUI):
+    def __init__(self):
+        super(openConfigGUI, self).__init__()
+        self.initUI()
+        
+    def initUI(self):
+        self.configButton = QtWidgets.QPushButton('Open Config')
+        self.configButton.clicked.connect(self.openConfig)
+        self.dialog = configGUI()
+        
+        self.grid.addWidget(self.configButton)
+        self.setLayout(self.grid)
+        
+    def openConfig(self):
+        self.dialog.show()
+    
+    
+        
 class configGUI(basicGUI):
     def __init__(self):
         super(configGUI, self).__init__()
         self.configOptions = self.getConfigOptions()
         
         self.initUI()
-    
+
     def initUI(self):
         row = 13
         for option in self.configOptions.keys():
             widget = QtWidgets.QLabel(self.configOptions[option]['Label'])
+            widget.name = option
             if option == '/main/capturesettings/shutterspeed':
                 widgetEdit = QtWidgets.QLineEdit()
+                widgetEdit.name = option
                 widgetEdit.setText(self.configOptions[option]['Current'])
                 
             elif self.configOptions[option]['Type'] in ['MENU','RADIO']:
                 widgetEdit = QtWidgets.QComboBox()
+                widgetEdit.name = option
                 widgetEdit.addItems(self.configOptions[option]['Choices'])
                 widgetEdit.setCurrentIndex(self.getCurrentOptionIndex(option))
-                widgetEdit.currentIndexChanged.connect(lambda x: self.updateConfigIndex(config, choice))
+                widgetEdit.currentIndexChanged.connect(functools.partial(self.updateConfigOptionByIndex, option))
+            
+            elif self.configOptions[option]['Type'] in ['RANGE']:
+                widgetEdit = QtWidgets.QLineEdit()
+                widgetEdit.name = option
+                widgetEdit.setText(self.configOptions[option]['Current'])
                 
+            elif self.configOptions[option]['Type'] in ['TEXT', 'TOGGLE']:
+                widgetEdit = QtWidgets.QLabel(self.configOptions[option]['Current'])
+                widgetEdit.name = option
+            
             self.grid.addWidget(widget, row, 0)
             self.grid.addWidget(widgetEdit, row, 1)
             row += 1
-        self.setLayout(self.grid)
-
-    def setCurrent(self):
+        self.showCurrent()
+            
+        setDefaultButton = QtWidgets.QPushButton('Reset to Default')
+        setDefaultButton.clicked.connect(self.setDefaultOptions)
+        self.grid.addWidget(setDefaultButton)
         
+        self.setLayout(self.grid)
+        
+    
+
+    def showCurrent(self):
+        widgets = (self.grid.itemAt(i).widget() for i in range(self.grid.count())) 
+        for widget in widgets:
+            widget_class = widget.__class__.__name__
+            if widget_class in ['QComboBox','QLineEdit']:
+                option = widget.name
+                actual = self.configOptions[option]['Current']
+                if option == '/main/capturesettings/shutterspeed':
+                    widget.setText(actual)
+                elif self.configOptions[option]['Type'] in ['RANGE']:
+                    widget.setText(actual)
+                elif self.configOptions[option]['Type'] in ['MENU','RADIO']:
+                    widget.setCurrentIndex(self.getCurrentOptionIndex(option))
 
     def getCurrentOptionIndex(self, option):
         return self.configOptions[option]['Choices'].index(
@@ -151,17 +226,58 @@ class configGUI(basicGUI):
                 config[name]['Top'] = line[4:]
             elif line.startswith('Step:'):
                 config[name]['Step'] = line[4:]
-        pprint.pprint(config)
+        #pprint.pprint([(key, config[key]['Current']) for key in config.keys()])
 
         return config
+    
+    def setDefaultOptions(self):
+        defaultConfig = {'/main/capturesettings/expprogram':'M',
+                         '/main/status/vendorextension':'Sony PTP Extensions',
+                         '/main/capturesettings/imagequality':'Extra Fine',
+                         '/main/actions/opcode':'0x1001,0xparam1,0xparam2',
+                         '/main/capturesettings/flashmode':'Fill flash',
+                         '/main/imgsettings/whitebalance':'Choose Color Temperature',
+                         '/main/imgsettings/colortemperature':'4200',
+                         '/main/capturesettings/exposurecompensation':'0',
+                         '/main/capturesettings/exposuremetermode':'Unknown value 8001',
+                         '/main/status/cameramodel':'ILCE-7RM3',
+                         '/main/status/batterylevel':'98%',
+                         '/main/capturesettings/f-number':'11',
+                         '/main/imgsettings/imagesize':'Large',
+                         '/main/capturesettings/aspectratio':'3:2',
+                         '/main/status/deviceversion':'1.0',
+                         '/main/actions/capture':'2',
+                         '/main/status/serialnumber':'00000000000000003282933003783803',
+                         '/main/capturesettings/shutterspeed':'1/10',
+                         '/main/actions/movie':'2',
+                         '/main/actions/bulb':'2',
+                         '/main/capturesettings/focusmode':'Manual',
+                         '/main/actions/manualfocus':'0',
+                         '/main/status/manufacturer':'Sony Corporation',
+                         '/main/imgsettings/iso':'3200',
+                         '/main/actions/autofocus':'2',
+                         '/main/capturesettings/capturemode':'Single Shot'}
+        for option in defaultConfig.keys():
+            if defaultConfig[option] != self.configOptions[option]['Current']:
+                if option == '/main/capturesettings/shutterspeed':
+                    self.updateConfigValue(option, defaultConfig[option], showCurrent=False)
+                elif self.configOptions[option]['Type'] in ['RANGE']:
+                    self.updateConfigValue(option, defaultConfig[option], showCurrent=False)
+                elif self.configOptions[option]['Type'] in ['MENU','RADIO']:
+                    self.updateConfigOptionByName(option, defaultConfig[option], showCurrent = False)
+        self.showCurrent()
 
-    def updateConfigIndex(self, option, choice):
-        choice_index = self.configOptions[option]['Choices'].index(choice)
+    def updateConfigOptionByIndex(self, option, choice_index, showCurrent = True):
         self.commandLine(['gphoto2','--set-config-index',option+'='+str(choice_index)])
         self.configOptions = self.getConfigOptions()
-        self.setCurrent()
+        
+    def updateConfigOptionByName(self, option, choice, showCurrent = True):
+        choice_index = self.configOptions[option]['Choices'].index(choice)
+        return self.updateConfigOptionByIndex(option, choice_index, showCurrent)
     
-
+    def updateConfigValue(self, option, value, showCurrent = True):
+        self.commandLine(['gphoto2','--set-config-value',option+'='+str(value)])
+    
 
     
 class liveViewGUI(basicGUI):
@@ -170,29 +286,25 @@ class liveViewGUI(basicGUI):
         
         self.timer = QtCore.QTimer()
         self.timer.timeout.connect(self.updatePreview)
-        self.timer.start(500)
-        self.thread = capturePreview()
-        self.thread.start()
+        self.timer.start(100)
         self.initUI()
         
     def initUI(self):
-        self.preview = QtWidgets.QLabel(self)
-        self.QRCode = QtWidgets.QLabel('QR Code:')
+        self.preview = ClickableIMG(self)
+        self.preview.setMinimumSize(1024,680)
+        self.preview.clicked.connect(self.openIMG)
         
-        self.preview.setMinimumSize(350, 250)
+        self.QRCode = QtWidgets.QLabel('QR Code:')
         
         self.grid.addWidget(self.QRCode, 0, 0)
         self.grid.addWidget(self.preview, 1, 0)
         self.setLayout(self.grid)
-
+        
+    def openIMG(self):
+        self.commandLine(['open','capture_preview.jpg'])
     
     def updatePreview(self):
-        #if 'thread' in self.__dict__:
-        #    self.thread.terminate()
-        
-        #self.thread = capturePreview()
-        #self.thread.start()
-        preview_img = QtGui.QPixmap('capture_preview.jpg').scaled(350, 250, 
+        preview_img = QtGui.QPixmap('capture_preview.jpg').scaled(1024,680, 
                                                        QtCore.Qt.KeepAspectRatio)
         QRCode_text = self.getQRCode('capture_preview.jpg')
         
@@ -214,11 +326,9 @@ class liveViewGUI(basicGUI):
 class imageViewGUI(basicGUI):
     def __init__(self):
         super(imageViewGUI, self).__init__()
-        self.IMG_HEIGHT = 500
-        self.IMG_WIDTH = 700
-        self.IMG_QUALITY = 4
+        self.IMG_HEIGHT = 680//2
+        self.IMG_WIDTH = 1024//2
         
-        self.setImgQuality(self.IMG_QUALITY)
         self.IMG_FOLDER = 'images'
         self.IMG_FILEFOLDER = self.getLatestImageName(self.IMG_FOLDER)
         self.IMG = self.getIMG()
@@ -236,9 +346,11 @@ class imageViewGUI(basicGUI):
             self.warn('Image format in folder not understood.%s'%self.IMG_FORMAT)
     
     def initUI(self):
-        self.img = QtWidgets.QLabel(self)
+        self.img = ClickableIMG(self)
         self.img.setMinimumSize(self.IMG_WIDTH, self.IMG_HEIGHT)
         self.img.setStyleSheet("border: 1px solid black")
+        self.img.clicked.connect(self.openIMG)
+        
         img_title = QtWidgets.QLabel('Latest image in folder: %s'%os.path.join(os.getcwd(),self.IMG_FOLDER))
         takePhotoButton = QtWidgets.QPushButton("Take Photo")
         takePhotoButton.clicked.connect(self.takePhoto)
@@ -251,27 +363,23 @@ class imageViewGUI(basicGUI):
         self.displayLatestImg()
         self.grid.addWidget(takePhotoButton, 3, 0)
         self.setLayout(self.grid)
-    
-    def setImgQuality(self, ImgQuality):
-        self.commandLine(['gphoto2', '--set-config-index',
-                            '/main/capturesettings/imagequality=%s'%ImgQuality])
+        
+    def openIMG(self):
+        self.commandLine(['open', self.IMG_FILEFOLDER])
 
     def takePhoto(self):
-        #self.IMG_QUALITY = self.commandLine(['gphoto2','--get-config','/main/capturesettings/imagequality'])
-        if int(self.IMG_QUALITY) in [0,1,2]:
+        IMG_QUALITY_SETTINGS = self.commandLine(['gphoto2','--get-config','/main/capturesettings/imagequality'])
+        IMG_QUALITY = IMG_QUALITY_SETTINGS.split('\n')[3][9:]
+        if IMG_QUALITY in ['Standard','Fine','Extra Fine']:
             IMG_FORMAT = 'jpg'
         else:
             IMG_FORMAT = 'arw'
-        output = self.commandLine(['gphoto2', '--capture-image-and-download',
-                           '--filename', 'images/%y-%m-%d %H%M%S.' + IMG_FORMAT])
-        
-        if 'ERROR' in output:
-            self.warn('Error taking image. Try again. Maybe check focus')
-        else:
-            self.displayLatestImg()
+        self.commandLine(['gphoto2', '--capture-image-and-download', '--filename', 
+                          'images/%y-%m-%d %H%M%S.' + IMG_FORMAT, '--force-overwrite'])
+        self.displayLatestImg()
         
     def getLatestImageName(self, image_folder):
-        images = [image for image in os.listdir(image_folder) if image.split('.')[1] in ['jpg','arw']]
+        images = [image for image in os.listdir(image_folder) if image.split('.')[-1] in ['jpg','arw']]
         latest_image_name = max([os.path.join(image_folder, image) for image in images], key=os.path.getctime)
         return latest_image_name
     
@@ -327,11 +435,10 @@ class GUI(basicGUI):
         self.auto_detect_camera = autoDetectCameraGUI()
         self.live_view = liveViewGUI()
         self.image_view = imageViewGUI()
-        self.config = configGUI()
+        self.config = openConfigGUI()
         self.initUI()
         
-    def initUI(self):
-        
+    def initUI(self):        
         self.setWindowTitle('Upload Image to Database')  
         self.setWindowIcon(QtGui.QIcon('icon.png')) 
         
@@ -341,16 +448,20 @@ class GUI(basicGUI):
         self.grid.addWidget(self.instructions, 0, 0)
         self.grid.addWidget(self.auto_detect_camera, 1, 0)
         self.grid.addWidget(self.live_view, 2, 0)
+        self.grid.addWidget(self.config, 4, 0)
         self.grid.addWidget(self.image_view, 0, 1, 3, 1)
-        self.grid.addWidget(self.config, 3, 0, 4, 1)
-        self.grid.addWidget(okButton, 4, 0)
-        self.grid.addWidget(cancelButton, 4, 1)
+        self.grid.addWidget(okButton, 5, 0)
+        self.grid.addWidget(cancelButton, 5, 1)
         self.setLayout(self.grid)
         
         self.show()
         
 
 if __name__ == '__main__':
+    global captureThread
+    captureThread = capturePreview()
+    captureThread.start()
+
     QtCore.QCoreApplication.addLibraryPath(os.path.join(os.path.dirname(QtCore.__file__), "plugins"))
     app = QtWidgets.QApplication(sys.argv)
     app.setWindowIcon(QtGui.QIcon('icon.png'))
