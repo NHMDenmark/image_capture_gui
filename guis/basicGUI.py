@@ -5,11 +5,14 @@ Created on Sun Sep  2 19:27:30 2018
 
 @author: robertahunt
 """
+import sys
 
 import warnings
 import subprocess
 
 from PyQt5 import QtGui, QtWidgets, QtCore
+
+import captureThread
 
 class ClickableIMG(QtWidgets.QLabel):
     clicked = QtCore.pyqtSignal(str)
@@ -31,27 +34,29 @@ class basicGUI(QtWidgets.QWidget):
 
     def commandLine(self, args):
         assert isinstance(args,list)
-        
-        if ('captureThread' in globals()) & (args[0] == 'gphoto2'):
-            captureThread.pause()
+        print('Sent command: ' + ' '.join(args))
+        if (args[0] == 'gphoto2'):
+            captureThread.captureThread.pause()
 
         try:
             output = subprocess.check_output(args)
-            if ('captureThread' in globals()) & (args[0] == 'gphoto2'):
-                captureThread.resume()
+            if (args[0] == 'gphoto2'):
+                captureThread.captureThread.resume()
             return output
         except Exception as ex:
             self.warn('Command %s failed. Exception: %s'%(' '.join(args), ex))
-            if ('captureThread' in globals()) & (args[0] == 'gphoto2'):
-                captureThread.resume()
+            if (args[0] == 'gphoto2'):
+                captureThread.captureThread.resume()
             return ex
         
-    def warn(self, msg):
+    def warn(self, msg, _exit=False):
         warnings.warn(msg)
         warning = QtWidgets.QMessageBox()
         warning.setWindowTitle('Warning Encountered')
         warning.setText(msg)
         warning.exec_()
+        if _exit:
+            sys.exit()
         
     def testCameraConnection(self):
         output = self.commandLine(['gphoto2','--list-config'])
@@ -63,8 +68,7 @@ class basicGUI(QtWidgets.QWidget):
         auto_detect_output = 'Cameras Detected: \n%s'%self.commandLine(['gphoto2','--auto-detect'])
         if len(auto_detect_output) <= 126:
             warning = 'Error xkcd1314: No cameras detected'
-            self.warn(warning)
-            sys.exit()
+            self.warn(warning, _exit=True)
             return auto_detect_output + warning
         return auto_detect_output
     

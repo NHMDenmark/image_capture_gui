@@ -28,9 +28,10 @@ class liveViewGUI(basicGUI):
         
         self.QRCode = QtWidgets.QLabel()
         
-        self.grid.addWidget(self.title)
-        self.grid.addWidget(self.QRCode)
-        self.grid.addWidget(self.preview)
+        self.grid.addWidget(self.title, 0, 0, 1, 2)
+        self.grid.addWidget(self.QRCode, 1, 0, 1, 2)
+        self.grid.addWidget(self.preview, 4, 0, 1, 2)
+        
         self.setLayout(self.grid)
         
     def openIMG(self):
@@ -43,7 +44,7 @@ class liveViewGUI(basicGUI):
             QRCode_text = self.getQRCode('capture_preview.jpg')
             
             self.preview.setPixmap(preview_img)
-            self.QRCode.setText('QR Code:' + QRCode_text)
+            self.QRCode.setText('QR Code / Catalog Number:' + QRCode_text)
         except Exception as ex:
             self.warn('Error reading capture_preview.jpg file. \n%s'%ex)
         
@@ -56,4 +57,5 @@ class liveViewGUI(basicGUI):
             if decoded.type == 'QRCODE':
                 return decoded.data
         else:
-            return ' not found'
+            return 'XXXXXX'
+        

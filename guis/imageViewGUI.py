@@ -8,6 +8,7 @@ Created on Sun Sep  2 20:43:32 2018
 import os
 import cv2
 import rawpy
+import numpy as np
 
 from pyzbar import pyzbar
 from PyQt5 import QtWidgets, QtCore, QtGui
@@ -41,32 +42,46 @@ class imageViewGUI(basicGUI):
         
         img_title = self.headerLabel('Latest image')
         img_desc = QtWidgets.QLabel('Latest image in folder: %s'%os.path.join(os.getcwd(),self.IMG_FOLDER))
-        takePhotoButton = QtWidgets.QPushButton("Take Photo")
-        takePhotoButton.clicked.connect(self.takePhoto)
-        QRCode_text = self.getQRCode(self.IMG_FILEFOLDER)
-        QRCode = QtWidgets.QLabel('QR Code: ' + QRCode_text)
+        self.img_name = QtWidgets.QLabel('Image Name: ' + self.IMG_FILEFOLDER)
+        self.takePhotoButton = QtWidgets.QPushButton("Take New Photo")
+        self.takePhotoButton.clicked.connect(self.takePhoto)
+        sendButton = QtWidgets.QPushButton("Send to Datastorage")
+        sendButton.clicked.connect(self.send)
+        self.QRCode = QtWidgets.QLabel()
         
-        self.grid.addWidget(img_title)
-        self.grid.addWidget(img_desc)
-        self.grid.addWidget(QRCode)
-        self.grid.addWidget(self.img)
+        self.QRCodeManual = QtWidgets.QLabel('Manual Catalog Number Entry (used only if QR Code not found): ')
+        self.QRCodeManualEdit = QtWidgets.QLineEdit()
+        
+        self.grid.addWidget(img_title, 0, 0, 1, 2)
+        self.grid.addWidget(img_desc, 1, 0, 1, 2)
+        self.grid.addWidget(self.img_name, 2, 0, 1, 2)
+        self.grid.addWidget(self.QRCode, 3, 0, 1, 2)
+        self.grid.addWidget(self.QRCodeManual, 4, 0, 1, 1)
+        self.grid.addWidget(self.QRCodeManualEdit, 4, 1, 1, 1)
+        self.grid.addWidget(self.img, 5, 0, 1, 2)
+        self.grid.addWidget(sendButton, 6, 0, 1, 2)
         self.displayLatestImg()
-        self.grid.addWidget(takePhotoButton)
         self.setLayout(self.grid)
+        
+    def send(self):    
+        pass
+        
+    
+    def getQRCode(self, img_path):
+        IMG_FORMAT = img_path.split('.')[-1]
+        #if IMG_FORMAT == 'arw':
+            
+        #elif IMG_FORMAT == 'jpg':
+            
+        decoded_list = pyzbar.decode(cv2.resize(self.IMG,(1024,680)))
+        for decoded in decoded_list:
+            if decoded.type == 'QRCODE':
+                return decoded.data
+        else:
+            return 'XXXXXX'
         
     def openIMG(self):
         self.commandLine(['open', self.IMG_FILEFOLDER])
-
-    def takePhoto(self):
-        IMG_QUALITY_SETTINGS = self.commandLine(['gphoto2','--get-config','/main/capturesettings/imagequality'])
-        IMG_QUALITY = IMG_QUALITY_SETTINGS.split('\n')[3][9:]
-        if IMG_QUALITY in ['Standard','Fine','Extra Fine']:
-            IMG_FORMAT = 'jpg'
-        else:
-            IMG_FORMAT = 'arw'
-        self.commandLine(['gphoto2', '--capture-image-and-download', '--filename', 
-                          'images/%y-%m-%d %H%M%S.' + IMG_FORMAT, '--force-overwrite'])
-        self.displayLatestImg()
         
     def getLatestImageName(self, image_folder):
         images = [image for image in os.listdir(image_folder) if image.split('.')[-1] in ['jpg','arw']]
@@ -86,12 +101,21 @@ class imageViewGUI(basicGUI):
             img_resized = QtGui.QPixmap(self.IMG_FILEFOLDER).scaled(self.IMG_WIDTH, self.IMG_HEIGHT, 
                                                        QtCore.Qt.KeepAspectRatio)
         self.img.setPixmap(img_resized)
-                
-    def getQRCode(self, img_path):
-        decoded_list = pyzbar.decode(cv2.resize(self.IMG,(1024,680)))
-        for decoded in decoded_list:
-            if decoded.type == 'QRCODE':
-                return decoded.data
+        
+        
+        QRCode_text = self.getQRCode(self.IMG_FILEFOLDER)
+        self.img_name.setText('Image Name: ' + QRCode_text + '_' + self.IMG_FILEFOLDER.split('/')[-1])            
+        
+        self.QRCode.setText('QR Code / Catalog Number: ' + QRCode_text)
+        
+    def takePhoto(self):
+        IMG_QUALITY_SETTINGS = self.commandLine(['gphoto2','--get-config','/main/capturesettings/imagequality'])
+        IMG_QUALITY = IMG_QUALITY_SETTINGS.split('\n')[3][9:]
+        if IMG_QUALITY in ['Standard','Fine','Extra Fine']:
+            IMG_FORMAT = 'jpg'
         else:
-            self.warn('Error xkcd1237: Qr code not found in image!')
-            return ' not found'
+            IMG_FORMAT = 'arw'
+        self.commandLine(['gphoto2', '--capture-image-and-download', '--filename', 
+                          'images/%y-%m-%d_%H%M%S.' + IMG_FORMAT, '--force-overwrite'])
+        self.displayLatestImg()
+                
