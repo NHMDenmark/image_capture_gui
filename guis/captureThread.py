@@ -5,10 +5,12 @@ Created on Tue Sep  4 10:28:02 2018
 
 @author: robertahunt
 """
+import os
 import subprocess
 
 from time import sleep
 from PyQt5 import QtCore
+from settings.local_settings import LOCAL_IMAGE_STORAGE_PATH
 
 #from basicGUI import basicGUI
 
@@ -22,7 +24,11 @@ class capturePreview(QtCore.QThread):
             if self.paused == False:
                 self.running = True
                 try:
-                    subprocess.check_output(['gphoto2','--capture-preview','--force-overwrite'])
+                    subprocess.check_output(['gphoto2','--capture-preview',
+                                             '--force-overwrite','--filename',
+                                             os.path.join(LOCAL_IMAGE_STORAGE_PATH,
+                                                          'preview.jpg')]
+                                             )
                 except Exception as ex:
                     pass
                 self.running = False

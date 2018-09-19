@@ -14,10 +14,10 @@ from basicGUI import basicGUI
 
 defaultConfig = {'/main/capturesettings/expprogram':'M', #not controllable
                  '/main/status/vendorextension':'Sony PTP Extensions', #not controllable
-                 '/main/capturesettings/imagequality':'Extra Fine', #Controllable
+                 '/main/capturesettings/imagequality':'RAW', #Controllable
                  '/main/actions/opcode':'0x1001,0xparam1,0xparam2', #not controllable
                  '/main/capturesettings/flashmode':'Fill flash', #Somewhat controllable
-                 '/main/imgsettings/whitebalance':'Choose Color Temperature', #
+                 '/main/imgsettings/whitebalance':'Shade', #
                  '/main/imgsettings/colortemperature':'4200', #controllable if whitebalance set to 'Choose Color Temperature'
                  '/main/capturesettings/exposurecompensation':'0', #not controllable
                  '/main/capturesettings/exposuremetermode':'Unknown value 8001', #Seems controllable
@@ -50,6 +50,8 @@ shutterSpeeds = ['1/8000','1/6400','1/5000','1/4000','1/3200','1/2500',
                  '0.5','0.6','0.8','1','1.3','1.6','2','2.5','3.2','4','5',
                  '6','8','10','13','15','20','25','30']
 
+colorTemperatures = ['0'] + [str(x) for x in list(range(3000,8000,200))]
+
 class configGUI(basicGUI, QtWidgets.QMainWindow):
     def __init__(self):
         super(configGUI, self).__init__()
@@ -58,18 +60,22 @@ class configGUI(basicGUI, QtWidgets.QMainWindow):
         self.initUI()
         
     
+    #def colorTempWidgets(self):
+    #    path = '/main/imgsettings/colortemperature'
+    #    config = self.configOptions[path]
+    #    labelWidget = QtWidgets.QLabel(config['Label'])
+    #    
+    #    editWidget = QtWidgets.QLineEdit()
+    #    editWidget.setText(config['Current'])
+    #    editWidget.editingFinished.connect(functools.partial(self.updateValue, path))
+    #    
+    #    editWidget.name = path
+    #    self.widgets[path] = editWidget
+    #    return labelWidget, editWidget
     def colorTempWidgets(self):
         path = '/main/imgsettings/colortemperature'
-        config = self.configOptions[path]
-        labelWidget = QtWidgets.QLabel(config['Label'])
+        return self.makeWidgetsFromPath(path)
         
-        editWidget = QtWidgets.QLineEdit()
-        editWidget.setText(config['Current'])
-        editWidget.editingFinished.connect(functools.partial(self.updateValue, path))
-        
-        editWidget.name = path
-        self.widgets[path] = editWidget
-        return labelWidget, editWidget
         
     def fNumberWidgets(self):
         path = '/main/capturesettings/f-number'
@@ -114,7 +120,8 @@ class configGUI(basicGUI, QtWidgets.QMainWindow):
             
         editWidget.setCurrentIndex(currentIndex)
         if path in ['/main/capturesettings/f-number',
-                    '/main/capturesettings/shutterspeed']:
+                    '/main/capturesettings/shutterspeed',
+                    '/main/imgsettings/colortemperature']:
             editWidget.activated.connect(functools.partial(
                     self.updateValueByIndex, path))
         else:
@@ -130,8 +137,8 @@ class configGUI(basicGUI, QtWidgets.QMainWindow):
         fNumber, self.fNumberEdit = self.fNumberWidgets()
         flashMode, self.flashModeEdit = self.flashModeWidgets()
         colorTemp, self.colorTempEdit = self.colorTempWidgets()
-        imageSize, self.imageSizeEdit = self.imageSizeWidgets()
-        imgQuality, self.imgQualityEdit = self.imgQualityWidgets()
+        #imageSize, self.imageSizeEdit = self.imageSizeWidgets()
+        #imgQuality, self.imgQualityEdit = self.imgQualityWidgets()
         captureMode, self.captureModeEdit = self.captureModeWidgets()
         whiteBalance, self.whiteBalanceEdit = self.whiteBalanceWidgets()
         shutterSpeed, self.shutterSpeedEdit = self.shutterSpeedWidgets()
@@ -143,10 +150,10 @@ class configGUI(basicGUI, QtWidgets.QMainWindow):
         showCurrentButton = QtWidgets.QPushButton('Show Current')
         showCurrentButton.clicked.connect(self.showCurrent)
     
-        self.grid.addWidget(imgQuality, 0, 0)
-        self.grid.addWidget(self.imgQualityEdit, 0, 1)
-        self.grid.addWidget(imageSize, 1, 0)
-        self.grid.addWidget(self.imageSizeEdit, 1, 1)
+        #self.grid.addWidget(imgQuality, 0, 0)
+        #self.grid.addWidget(self.imgQualityEdit, 0, 1)
+        #self.grid.addWidget(imageSize, 1, 0)
+        #self.grid.addWidget(self.imageSizeEdit, 1, 1)
         self.grid.addWidget(fNumber, 2, 0)
         self.grid.addWidget(self.fNumberEdit, 2, 1)
         self.grid.addWidget(shutterSpeed, 3, 0)
@@ -169,7 +176,7 @@ class configGUI(basicGUI, QtWidgets.QMainWindow):
             
         self.setLayout(self.grid)
                 
-        self.widgets['/main/imgsettings/colortemperature'].clearFocus()
+        #self.widgets['/main/imgsettings/colortemperature'].clearFocus()
     
 
     def showCurrent(self):
@@ -183,7 +190,7 @@ class configGUI(basicGUI, QtWidgets.QMainWindow):
             if widget_class in ['QComboBox', 'QLineEdit']:
                 path = widget.name
                 actual = self.configOptions[path]['Current']
-                if path == '/main/imgsettings/colortemperature':
+                if False:#path == '/main/imgsettings/colortemperature':
                     widget.setText(actual)
                 else:
                     widget.setCurrentIndex(self.getCurrentOptionIndex(path))
@@ -201,10 +208,11 @@ class configGUI(basicGUI, QtWidgets.QMainWindow):
             
         for path in self.widgets.keys():
             if defaultConfig[path] != self.configOptions[path]['Current']:
-                if path in ['/main/imgsettings/colortemperature']:
+                if False:#path in ['/main/imgsettings/colortemperature']:
                     self.updateValue(path, defaultConfig[path], showCurrent=False)
                 elif path in ['/main/capturesettings/f-number',
-                            '/main/capturesettings/shutterspeed']:
+                            '/main/capturesettings/shutterspeed',
+                            '/main/imgsettings/colortemperature']:
                     index = self.widgets[path].findText(defaultConfig[path])
                     self.updateValueByIndex(path, index, showCurrent=False)
                 else:
@@ -216,7 +224,8 @@ class configGUI(basicGUI, QtWidgets.QMainWindow):
         
         if path == '/main/imgsettings/whitebalance':
             if self.widgets[path].itemText(choice_index) != 'Choose Color Temperature':
-                self.updateValue('/main/imgsettings/colortemperature', '0')
+                pass
+                #self.updateValue('/main/imgsettings/colortemperature', '0')
         if showCurrent == True:
             self.showCurrent()
         
@@ -275,6 +284,7 @@ class configGUI(basicGUI, QtWidgets.QMainWindow):
         
         config['/main/capturesettings/f-number']['Choices'] = fNumbers
         config['/main/capturesettings/shutterspeed']['Choices'] = shutterSpeeds 
+        config['/main/imgsettings/colortemperature']['Choices'] = colorTemperatures
         return config
 
     

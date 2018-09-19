@@ -32,6 +32,7 @@ class basicGUI(QtWidgets.QWidget):
         headerLabel.setFont(headerFont)
         return headerLabel
 
+
     def commandLine(self, args):
         assert isinstance(args,list)
         print('Sent command: ' + ' '.join(args))
