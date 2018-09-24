@@ -36,14 +36,14 @@ class capturePreview(QtCore.QThread):
             sleep(1)
             
     def pause(self):
-        print('Capture Paused')
+        #print('Capture Paused')
         self.paused = True
         while self.running == True:
             sleep(1)
         return True
         
     def resume(self):
-        print('Capture Resumed')
+        #print('Capture Resumed')
         self.paused = False
 
 def init():

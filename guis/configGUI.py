@@ -50,7 +50,7 @@ shutterSpeeds = ['1/8000','1/6400','1/5000','1/4000','1/3200','1/2500',
                  '0.5','0.6','0.8','1','1.3','1.6','2','2.5','3.2','4','5',
                  '6','8','10','13','15','20','25','30']
 
-colorTemperatures = ['0'] + [str(x) for x in list(range(3000,8000,200))]
+colorTemperatures = ['0'] + [str(x) for x in list(range(3000,8000,100))]
 
 class configGUI(basicGUI, QtWidgets.QMainWindow):
     def __init__(self):

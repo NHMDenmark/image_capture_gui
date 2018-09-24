@@ -5,6 +5,9 @@ Created on Tue Sep 11 10:29:09 2018
 
 @author: robertahunt
 """
+#Arduino settings
+ARDUINO_PORT = ''
+
 #ERDA Settings
 SFTP_PUBLIC_KEY = ""
 ERDA_USERNAME = ""

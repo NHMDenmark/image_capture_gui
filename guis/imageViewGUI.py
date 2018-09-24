@@ -15,6 +15,7 @@ import pysftp
 import paramiko
 import threading
 import numpy as np
+import pandas as pd
 
 
 from pyzbar import pyzbar
@@ -24,12 +25,22 @@ from basicGUI import basicGUI, ClickableIMG
 from settings.local_settings import (SFTP_PUBLIC_KEY, ERDA_USERNAME, 
                                      ERDA_SFTP_PASSWORD, ERDA_HOST,
                                      ERDA_PORT, ERDA_FOLDER, TEMP_IMAGE_CACHE_PATH,
-                                     LOCAL_IMAGE_STORAGE_PATH)
+                                     LOCAL_IMAGE_STORAGE_PATH, ARDUINO_PORT)
+
+global start_time
+
+def start_timer():
+    global start_time
+    start_time = pd.Timestamp.now()
+
+def tick(msg = ''):
+    global start_time
+    print(msg + ', Time Taken: %s'%(pd.Timestamp.now()-start_time))
 
 class imageViewGUI(basicGUI, QtWidgets.QMainWindow):
     def __init__(self):
         super(imageViewGUI, self).__init__()
-        self.board = serial.Serial('/dev/cu.usbmodem1421', 9600)
+        self.board = serial.Serial(ARDUINO_PORT, 9600)
         self.PREVIEW_WIDTH = 1024//2
         self.PREVIEW_HEIGHT = 680//2
         
@@ -38,6 +49,7 @@ class imageViewGUI(basicGUI, QtWidgets.QMainWindow):
         self.newImgName = ''
         self.imgSuffix = '0'
         self.initUI()
+        
     
     def initUI(self):
         self.imgView = ClickableIMG(self)
@@ -77,7 +89,12 @@ class imageViewGUI(basicGUI, QtWidgets.QMainWindow):
         else:
             self.warn('Image format in folder not understood.%s'%_format)
         
-    def sendToERDA(self, img_path):  
+    def sendToERDA(self, tempPath=None, imgName=None):  
+        if not len(tempPath):
+            tempPath = self.tempPath
+        if not len(imgName):
+            imgName = self.newImgName
+    
         if len(str(int(self.QRCode))) != 6:
             try:
                 if len(str(int(self.QRCodeManualEdit.text()))) == 6:
@@ -95,9 +112,8 @@ class imageViewGUI(basicGUI, QtWidgets.QMainWindow):
         sftp = pysftp.Connection(host=ERDA_HOST, username=ERDA_USERNAME, 
                                  password=ERDA_SFTP_PASSWORD, cnopts=cnopts)
 
-        local_path = self.tempPath
-        remote_path = os.path.join(ERDA_FOLDER, self.newImgName)
-        sftp.put(local_path,remote_path)
+        remote_path = os.path.join(ERDA_FOLDER, imgName)
+        sftp.put(tempPath,remote_path)
         sftp.close()
         self.close()
         
@@ -147,21 +163,24 @@ class imageViewGUI(basicGUI, QtWidgets.QMainWindow):
         self.newImgNameLabel.setText('New image name: %s'% self.newImgName)
         
     def takePhoto(self, imgName=None):   
+        start_timer()
         print(imgName)
         if (imgName is None) | (imgName == False):
-            imgName = time.strftime('%Y%m%d_%H%M%S.arw', time.gmtime())
+            imgName = 'capture.arw'
         
         os.chdir(self.TEMP_FOLDER)
         print(imgName)
         self.commandLine(['gphoto2', '--capture-image-and-download',
                           '--force-overwrite', '--filename', imgName])
+        tick('Done Taking Photo')
         
-    
-        self.tempPath, self.tempName = self.getLatestImageName(self.TEMP_FOLDER)
-        name, fileformat = self.tempName.split('.')
-        if len(name):
-            new_name = os.path.join(TEMP_IMAGE_CACHE_PATH, name + '.tiff')
-            self.commandLine(['sips', '-s','format','tiff',self.tempPath, '--out',new_name])
+        #start_timer()
+        #self.tempPath, self.tempName = self.getLatestImageName(self.TEMP_FOLDER)
+        #name, fileformat = self.tempName.split('.')
+        #if len(name):
+        #    new_name = os.path.join(TEMP_IMAGE_CACHE_PATH, name + '.tiff')
+        #    self.commandLine(['sips', '-s','format','tiff',self.tempPath, '--out',new_name])
+        #tick('Done Converting Photo to tiff')
     
     
         
@@ -175,7 +194,9 @@ class imageViewGUI(basicGUI, QtWidgets.QMainWindow):
                 #Start taking photos
                 print('Taking pics')
                 for i in range(n_photos):
-                    self.takePhoto(imgName='Stacked_'+str(i)+'.arw')
+                    start_timer()
+                    tempImgName = 'Stacked_'+str(i)+'.arw'
+                    self.takePhoto(imgName=tempImgName)
                     time.sleep(0.1)
                     self.board.write("d 0.2\n")
                     time.sleep(0.5)
@@ -185,12 +206,52 @@ class imageViewGUI(basicGUI, QtWidgets.QMainWindow):
                     if len(self.QRCode):
                         QRCode = self.QRCode
                     print(self.QRCode)
-                #Move camera back to place
-                for i in range(n_photos):
-                    self.board.write("u 0.2\n")
-                    time.sleep(0.5)
-                break #break out of while loops
+                    tick('Done taking one photo for stack')
+                break
+#                
+#        print('Copying to Local Storage')
+#        if len(QRCode):
+#            for i in range(n_photos):
+#                start_timer()
+#                tempRawPath = os.path.join(self.TEMP_FOLDER, 'Stacked_'+str(i)+'.arw')
+#                tempTiffPath = os.path.join(self.TEMP_FOLDER, 'Stacked_'+str(i)+'.tiff')
+#                
+#                rawImgName = 'NHMD' + QRCode + '_' + timestamp + '_' + str(i) + '.arw'
+#                tiffImgName = 'NHMD' + QRCode + '_' + timestamp + '_' + str(i) + '.tiff'
+#                
+#                rawImgPath = os.path.join(LOCAL_IMAGE_STORAGE_PATH, rawImgName)
+#                tiffImgPath = os.path.join(LOCAL_IMAGE_STORAGE_PATH, tiffImgName)
+#                
+#                self.commandLine(['cp',tempRawPath,rawImgPath])
+#                tick('Done copying one arw locally')
+#                start_timer()
+#                self.commandLine(['cp',tempTiffPath,tiffImgPath])
+#                tick('Done copying one tiff locally')
+#        
+#        print('Sending to ERDA')
+#        if len(QRCode):
+#            for i in range(n_photos):
+#                start_timer()
+#                print('Photo %s'%i)
+#                tempRawPath = os.path.join(self.TEMP_FOLDER, 'Stacked_'+str(i)+'.arw')
+#                tempTiffPath = os.path.join(self.TEMP_FOLDER, 'Stacked_'+str(i)+'.tiff')
+#                
+#                rawImgName = 'NHMD' + QRCode + '_' + timestamp + '_' + str(i) + '.arw'
+#                tiffImgName = 'NHMD' + QRCode + '_' + timestamp + '_' + str(i) + '.tiff'
+#                
+#                self.sendToERDA(tempRawPath, rawImgName)
+#                tick('Done sending one arw to ERDA')
+#                self.sendToERDA(tempTiffPath, tiffImgName)
+#                tick('Done sending one tiff to ERDA')
         
+        print('Moving camera back to place')
+        #Move camera back to place
+        start_timer()
+        for i in range(n_photos):
+            self.moveCamera('u',str(n_photos*0.2))
+            time.sleep(0.25)
+        tick('Done Moving Camera Back') 
+    
     def moveCamera(self, direction, cm):
         assert direction in ['u','d']
         while True:
@@ -223,8 +284,6 @@ class takePhotoGUI(basicGUI):
         self.moveCameraUpCm.clicked.connect(self.dialog.cameraUpCm)
         self.moveCameraDownMm.clicked.connect(self.dialog.cameraDownMm)
         self.moveCameraDownCm.clicked.connect(self.dialog.cameraDownCm)
-        
-        
         
         self.takePhotoButton = QtWidgets.QPushButton('Take New Photo')
         self.takePhotoButton.clicked.connect(self.dialog.takePhoto)

@@ -49,7 +49,8 @@ class liveViewGUI(basicGUI):
             self.preview.setPixmap(preview_img)
             self.QRCode.setText('QR Code / Catalog Number:' + QRCode_text)
         except Exception as ex:
-            self.warn('Error reading' + self.preview_path + 'file. \n%s'%ex)
+            pass
+            #self.warn('Error reading' + self.preview_path + 'file. \n%s'%ex)
     
     def getQRCode(self, img_path):
         decoded_list = pyzbar.decode(cv2.imread(img_path))
