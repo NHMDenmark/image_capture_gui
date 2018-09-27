@@ -5,45 +5,69 @@ Created on Fri Sep  7 17:28:17 2018
 
 @author: robertahunt
 """
+import time
+import serial
+
 from PyQt5 import QtCore, QtWidgets
 
 from guis.basicGUI import basicGUI
+from guis.progressDialog import progressDialog
+
+from guis.settings.local_settings import ARDUINO_PORT
 
 
 class checksGUI(basicGUI):
     def __init__(self):
         super(checksGUI, self).__init__()
         
-        self.timer = QtCore.QTimer()
-        self.timer.timeout.connect(self.checkDetectCamera)
-        self.timer.timeout.connect(self.checkCameraConnection)
-        self.timer.start(5000)
-        
-        self.initUI()
-        
-    def initUI(self):
-        self.auto_detect_camera_check = QtWidgets.QLabel('Auto Detect Camera: Unknown')
-        self.usb_connection_check = QtWidgets.QLabel('Camera Connection: Unknown')
-        
-        self.grid.addWidget(self.auto_detect_camera_check)
-        self.grid.addWidget(self.usb_connection_check)
-        self.setLayout(self.grid)
+        self.progress = progressDialog()
+        self.progress._open()
         
         
-    def checkDetectCamera(self):
-        output = self.testDetectCamera()
+        self.progress.update(0,'Trying to Detect Camera.')
+        #self.testDetectCamera()
         
-        if 'Sony' in output:
-            self.auto_detect_camera_check.setText("Auto Detect Camera: <font color='green'> OK</font>")
-        else:
-            self.auto_detect_camera_check.setText("Auto Detect Camera: <font color='red'> Error</font>")
-        self.setLayout(self.grid)
+        self.progress.update(20,'Testing Camera Connection')
+        #self.testCameraConnection()
         
-    def checkCameraConnection(self):
-        output = self.testCameraConnection()
+        self.progress.update(40,'Testing Arduino Connection')
+        self.testArduinoConnection()
         
-        if output is None:
-            self.usb_connection_check.setText("Camera Connection: <font color='green'> OK</font>")
-        else:
-            self.usb_connection_check.setText("Camera Connection: <font color='red'> Error</font>")
-        self.setLayout(self.grid)
+        self.progress.update(60,'Testing Sonar Data Collection')
+        self.testGetSonarData()
+        
+        self.progress.update(80,'Testing Camera Movement')
+        self.testMoveCamera()
+        
+        self.progress.update(100,'Done')
+        self.progress.close()
+       
+            
+    def testDetectCamera(self):
+        auto_detect_output = 'Cameras Detected: \n%s'%self.commandLine(['gphoto2','--auto-detect'])
+        if len(auto_detect_output) <= 126:
+            warning = 'Error xkcd1314: No cameras detected'
+            self.warn(warning, _exit=True)
+            return auto_detect_output + warning
+        return auto_detect_output
+        
+    def testCameraConnection(self):
+        output = self.commandLine(['gphoto2','--list-config'])
+        if 'Error' in str(output):
+            self.warn('''There is a problem sending commands to camera. Please check usb cable, unplug and replug and try again''', _exit=True)
+                      
+    def testArduinoConnection(self):
+        try:
+            self.board = serial.Serial(ARDUINO_PORT, 9600)
+        except:
+            self.warn('Unable to connect to Arduino on Port: ' + ARDUINO_PORT + '. Please make sure arduino has power and is connected to the computer.',_exit=True)
+            
+
+    def testGetSonarData(self):
+        pass
+            
+    def testMoveCamera(self):
+    
+        self.board.close()
+        pass
+        

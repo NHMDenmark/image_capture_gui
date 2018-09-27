@@ -15,81 +15,38 @@ from matplotlib.backends.backend_qt5agg import (
         FigureCanvas, NavigationToolbar2QT)
 
 from guis import captureThread
-from guis.plotsGUI import plotsGUI
+#from guis.plotsGUI import plotsGUI
 from guis.basicGUI import basicGUI
 from guis.checksGUI import checksGUI
-from guis.configGUI import openConfigGUI, configGUI
-from guis.liveViewGUI import liveViewGUI
-from guis.imageViewGUI import imageViewGUI, takePhotoGUI
-from guis.calibrateGUI import calibrateGUI
+#from guis.configGUI import openConfigGUI, configGUI
+#from guis.liveViewGUI import liveViewGUI
+#from guis.imageViewGUI import imageViewGUI, takePhotoGUI
+#from guis.calibrateGUI import calibrateGUI
+from guis.progressDialog import progressDialog
 from guis.instructionsGUI import instructionsGUI
-from guis.autoDetectCameraGUI import autoDetectCameraGUI
+#from guis.autoDetectCameraGUI import autoDetectCameraGUI
 
-class progressDialog(basicGUI, QtWidgets.QMainWindow):
-    def __init__(self):
-        super(progressDialog, self).__init__()
-        self.initUI()
-        
-    def initUI(self):
-        self.text = QtWidgets.QLabel('Text Here')
-        self.progressBar = QtWidgets.QProgressBar(self)
-        self.progressBar.setRange(0,100)
-        self.grid.addWidget(self.text)
-        self.grid.addWidget(self.progressBar)
-        self.setLayout(self.grid)
-        
-    def _open(self):
-        QtWidgets.QApplication.processEvents()
-        self.raise_()
-        self.show()
-        QtWidgets.QApplication.processEvents()
-        
-    def update(self, value, text = None):
-        if text is not None:
-            self.text.setText(text)
-        self.progressBar.setValue(value)
-        
-    
 
-class progressThread(QtCore.QThread):
-    progress_update = QtCore.Signal(int)
-    
-    def __init__(self, parent=None):
-        super(progressThread, self).__init__(parent)
-
-        
-    def __del__(self):
-        self.wait()
-        
-    def run(self):
-        while True:
-            maxVal = 1
-            self.progress_update.emit(maxVal)
-            time.sleep(1)
 
 class GUI(basicGUI):
     def __init__(self):
         super(GUI, self).__init__()
-        self.dialog = progressDialog()
-        
-        self.dialog._open()
-        #self.checks = checksGUI()
-        print('Checks Done')
+        self.progress = progressDialog()
+        self.progress._open()
+
+        self.progress.update(20,'Getting Coffee..')
         self.instructions = instructionsGUI()
-        self.dialog.update(10,'New Text')
-        print('Instructions Done')
-        #self.auto_detect_camera = autoDetectCameraGUI()
-        print('autoDetect Done')
-        self.live_view = liveViewGUI()
-        print('liveView Done')
-        self.plots = plotsGUI()
-        print('contrast Done')
-        self.takePhoto = takePhotoGUI()
-        print('imageView Done')
-        self.config = configGUI()#openConfigGUI()
-        print('Config Done')
+       
+        self.progress.update(30,'Checking Appendages..')
+        self.checks = checksGUI()
+      
+        self.progress.update(50,'Getting Dressed..')
+        #self.live_view = liveViewGUI()
+        #self.plots = plotsGUI()
+        #self.takePhoto = takePhotoGUI()
+        #self.config = configGUI()
         #self.calibrate = calibrateGUI()
-        print('Calibrate Loaded')
+        self.progress.update(100)
         self.initUI()
         
         
@@ -108,7 +65,7 @@ class GUI(basicGUI):
         
         self.setLayout(self.grid)
         self.show()
-        self.dialog.close()
+        self.progress.close()
 
         
 

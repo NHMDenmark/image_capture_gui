@@ -189,25 +189,21 @@ class imageViewGUI(basicGUI, QtWidgets.QMainWindow):
         QRCode = ''
         timestamp = time.strftime('%Y%m%d_%H%M%S', time.gmtime())
         
-        while True:
-            if (self.board.inWaiting()>0):  # Check if board available
-                #Start taking photos
-                print('Taking pics')
-                for i in range(n_photos):
-                    start_timer()
-                    tempImgName = 'Stacked_'+str(i)+'.arw'
-                    self.takePhoto(imgName=tempImgName)
-                    time.sleep(0.1)
-                    self.board.write("d 0.2\n")
-                    time.sleep(0.5)
-                    
-                    self.img = self.getIMG()
-                    self.QRCode = self.getQRCode()
-                    if len(self.QRCode):
-                        QRCode = self.QRCode
-                    print(self.QRCode)
-                    tick('Done taking one photo for stack')
-                break
+        #Start taking photos
+        print('Taking pics')
+        for i in range(n_photos):
+            start_timer()
+            tempImgName = 'Stacked_'+str(i)+'.arw'
+            self.takePhoto(imgName=tempImgName)
+            time.sleep(0.1)
+            self.moveCamera('d','0.2')
+            
+            self.img = self.getIMG()
+            self.QRCode = self.getQRCode()
+            if len(self.QRCode):
+                QRCode = self.QRCode
+            print(self.QRCode)
+            tick('Done taking one photo for stack')
 #                
 #        print('Copying to Local Storage')
 #        if len(QRCode):

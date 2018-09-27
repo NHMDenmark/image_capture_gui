@@ -12,7 +12,7 @@ import subprocess
 
 from PyQt5 import QtGui, QtWidgets, QtCore
 
-import captureThread
+from guis import captureThread
 
 class ClickableIMG(QtWidgets.QLabel):
     clicked = QtCore.pyqtSignal(str)
@@ -59,19 +59,6 @@ class basicGUI(QtWidgets.QWidget):
         if _exit:
             sys.exit()
         
-    def testCameraConnection(self):
-        output = self.commandLine(['gphoto2','--list-config'])
-        if 'Error' in output:
-            self.warn('''There is a problem sending commands to camera.
-                      Please check usb cable, unplug and replug and try again''')
-            
-    def testDetectCamera(self):
-        auto_detect_output = 'Cameras Detected: \n%s'%self.commandLine(['gphoto2','--auto-detect'])
-        if len(auto_detect_output) <= 126:
-            warning = 'Error xkcd1314: No cameras detected'
-            self.warn(warning, _exit=True)
-            return auto_detect_output + warning
-        return auto_detect_output
     
     #def closeEvent(self, event):
         #reply = QtGui.QMessageBox.question(self, 'Message',

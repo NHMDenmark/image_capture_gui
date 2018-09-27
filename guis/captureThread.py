@@ -10,7 +10,7 @@ import subprocess
 
 from time import sleep
 from PyQt5 import QtCore
-from settings.local_settings import LOCAL_IMAGE_STORAGE_PATH
+from guis.settings.local_settings import LOCAL_IMAGE_STORAGE_PATH
 
 #from basicGUI import basicGUI
 
