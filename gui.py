@@ -9,22 +9,17 @@ import sys
 import time
 
 from PyQt5 import QtGui, QtCore, QtWidgets
-from matplotlib.figure import Figure
-from matplotlib.backends.qt_compat import QtCore#, QtWidgets, is_pyqt5
-from matplotlib.backends.backend_qt5agg import (
-        FigureCanvas, NavigationToolbar2QT)
 
 from guis import captureThread
-#from guis.plotsGUI import plotsGUI
+from guis.plotsGUI import plotsGUI
 from guis.basicGUI import basicGUI
 from guis.checksGUI import checksGUI
-#from guis.configGUI import openConfigGUI, configGUI
-#from guis.liveViewGUI import liveViewGUI
-#from guis.imageViewGUI import imageViewGUI, takePhotoGUI
+from guis.configGUI import configGUI
+from guis.liveViewGUI import liveViewGUI
+from guis.takePhotosGUI import takePhotosGUI
 #from guis.calibrateGUI import calibrateGUI
 from guis.progressDialog import progressDialog
 from guis.instructionsGUI import instructionsGUI
-#from guis.autoDetectCameraGUI import autoDetectCameraGUI
 
 
 
@@ -36,32 +31,29 @@ class GUI(basicGUI):
 
         self.progress.update(20,'Getting Coffee..')
         self.instructions = instructionsGUI()
-       
+        print('Done instructions')
         self.progress.update(30,'Checking Appendages..')
         self.checks = checksGUI()
       
         self.progress.update(50,'Getting Dressed..')
-        #self.live_view = liveViewGUI()
-        #self.plots = plotsGUI()
-        #self.takePhoto = takePhotoGUI()
-        #self.config = configGUI()
+        self.live_view = liveViewGUI()
+        self.plots = plotsGUI()
+        self.takePhoto = takePhotosGUI()
+        self.config = configGUI()
         #self.calibrate = calibrateGUI()
-        self.progress.update(100)
+        self.progress.close()
         self.initUI()
         
         
     def initUI(self):        
         self.setWindowTitle('Upload Image to Database')  
-        
         self.setWindowIcon(QtGui.QIcon('icon.png')) 
   
         self.grid.addWidget(self.instructions, 0, 0)
-        #self.grid.addWidget(self.image_view, 3, 0)
-        #self.grid.addWidget(self.calibrate, 0, 0, 1, 1)
-        #self.grid.addWidget(self.config, 1, 0, 2, 1)
-        #self.grid.addWidget(self.plots, 3, 0, 5, 1)
-        #self.grid.addWidget(self.live_view, 0, 1, 8, 1)
-        #self.grid.addWidget(self.takePhoto, 8, 1, 1, 1)
+        self.grid.addWidget(self.config, 1, 0, 2, 1)
+        self.grid.addWidget(self.plots, 3, 0, 5, 1)
+        self.grid.addWidget(self.live_view, 0, 1, 8, 1)
+        self.grid.addWidget(self.takePhoto, 8, 1, 1, 1)
         
         self.setLayout(self.grid)
         self.show()

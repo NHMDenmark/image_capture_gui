@@ -1,3 +1,12 @@
+
+//Set Up Sonar Sensor
+#include "SR04.h"
+#define TRIG_PIN 6
+#define ECHO_PIN 5
+SR04 sr04 = SR04(ECHO_PIN, TRIG_PIN);
+
+
+//Set Up Motor Controller
 int data;
 
 float distance = 1;
@@ -27,7 +36,7 @@ void setup() {
   Serial.begin(9600); //initialize serial COM at 9600 baudrate
   pinMode(LED_BUILTIN, OUTPUT); //make the LED pin (13) as output
   digitalWrite (LED_BUILTIN, LOW);
-  Serial.println("Hi!, I am Arduino");
+  
   pinMode(CHECK_CONTROLLER_PIN, INPUT);
   pinMode(UP_PIN, OUTPUT);
   pinMode(DOWN_PIN, OUTPUT);
@@ -38,7 +47,7 @@ void setup() {
 
 void loop() {
   
-  while (Serial.available() && newCommand == false){
+  if (Serial.available() && newCommand == false){
     static byte nowReadingDistance = 0;
     static byte ndx = 0;
     char endMarker = '\n';
@@ -48,35 +57,41 @@ void loop() {
     rc = Serial.read();
 
   
-  if (rc == splitMarker) {
-      receivedDirection[ndx] = '\0';
-      nowReadingDistance = 1;
+    if (rc == splitMarker) {
+        receivedDirection[ndx] = '\0';
+        nowReadingDistance = 1;
+        ndx = 0;
+        }
+    else if (rc == endMarker){
+      nowReadingDistance = 0;
+      receivedDistance[ndx] = '\0'; // terminate the string
       ndx = 0;
+      newCommand = true;
+      runCommand();
       }
-  else if (rc == endMarker){
-    nowReadingDistance = 0;
-    receivedDistance[ndx] = '\0'; // terminate the string
-    ndx = 0;
-    newCommand = true;
-    runCommand();
-    }
-  else {
-      if (nowReadingDistance == 1) {
-        receivedDistance[ndx] = rc;
-        ndx++;
-        if (ndx >= numChars) {
-          ndx = numChars - 1;
+    else {
+        if (nowReadingDistance == 1) {
+          receivedDistance[ndx] = rc;
+          ndx++;
+          if (ndx >= numChars) {
+            ndx = numChars - 1;
+          }
         }
-      }
-      else {
-        receivedDirection[ndx] = rc;
-        ndx++;
-        if (ndx >= numChars) {
-          ndx = numChars - 1;
+        else {
+          receivedDirection[ndx] = rc;
+          ndx++;
+          if (ndx >= numChars) {
+            ndx = numChars - 1;
+          }
         }
+        
       }
-      
-    }
+  }
+  else{
+    long sonar_distance = sr04.Distance();
+    Serial.print(sonar_distance);  
+    Serial.println("cm");  
+    delay(1000);
   }
 }
 

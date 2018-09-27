@@ -11,12 +11,13 @@ from PyQt5 import QtWidgets, QtCore, QtGui
 from guis.basicGUI import basicGUI
 
 class progressDialog(basicGUI, QtWidgets.QMainWindow):
-    def __init__(self):
+    def __init__(self, initial_msg = "Working."):
         super(progressDialog, self).__init__()
+        self.initial_msg = initial_msg
         self.initUI()
         
     def initUI(self):
-        self.text = QtWidgets.QLabel('Working.')
+        self.text = QtWidgets.QLabel(self.initial_msg)
         self.progressBar = QtWidgets.QProgressBar(self)
         self.progressBar.setRange(0,100)
         self.grid.addWidget(self.text)
@@ -39,4 +40,8 @@ class progressDialog(basicGUI, QtWidgets.QMainWindow):
         self.progressBar.setValue(value)
         
         QtWidgets.QApplication.processEvents()
+    
+    def close(self):
+        self.update(100)
+        self.progressBar.close()
         

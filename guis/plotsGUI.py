@@ -15,7 +15,7 @@ from matplotlib.figure import Figure
 #from matplotlib.backends.qt_compat import QtCore#, QtWidgets, is_pyqt5
 from matplotlib.backends.backend_qt5agg import FigureCanvas
 
-from settings.local_settings import LOCAL_IMAGE_STORAGE_PATH
+from settings.local_settings import CACHE_FOLDER
 
 
 from guis.basicGUI import basicGUI
@@ -26,7 +26,7 @@ class plotsGUI(basicGUI):
         
         self.width = 400
         self.height = 150
-        self.path = os.path.join(LOCAL_IMAGE_STORAGE_PATH, 'thumb_preview.jpg')
+        self.path = os.path.join(CACHE_FOLDER, 'thumb_preview.jpg')
         self.n_contrast_history = 100
         self.contrast_history = np.zeros(self.n_contrast_history)
         self.contrast_x_axis = np.linspace(1,self.n_contrast_history,

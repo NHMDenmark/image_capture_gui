@@ -17,15 +17,15 @@ import threading
 import numpy as np
 import pandas as pd
 
-
+from serial import Serial
 from pyzbar import pyzbar
 from base64 import b64decode
 from PyQt5 import QtWidgets, QtCore, QtGui
-from basicGUI import basicGUI, ClickableIMG
+from basicGUI import basicGUI, ClickableIMG, Arduino
 from settings.local_settings import (SFTP_PUBLIC_KEY, ERDA_USERNAME, 
                                      ERDA_SFTP_PASSWORD, ERDA_HOST,
                                      ERDA_PORT, ERDA_FOLDER, TEMP_IMAGE_CACHE_PATH,
-                                     LOCAL_IMAGE_STORAGE_PATH, ARDUINO_PORT)
+                                     LOCAL_IMAGE_STORAGE_PATH)
 
 global start_time
 
@@ -40,7 +40,7 @@ def tick(msg = ''):
 class imageViewGUI(basicGUI, QtWidgets.QMainWindow):
     def __init__(self):
         super(imageViewGUI, self).__init__()
-        self.board = serial.Serial(ARDUINO_PORT, 9600)
+        self.arduino = Arduino()
         self.PREVIEW_WIDTH = 1024//2
         self.PREVIEW_HEIGHT = 680//2
         
@@ -196,7 +196,8 @@ class imageViewGUI(basicGUI, QtWidgets.QMainWindow):
             tempImgName = 'Stacked_'+str(i)+'.arw'
             self.takePhoto(imgName=tempImgName)
             time.sleep(0.1)
-            self.moveCamera('d','0.2')
+            self.arduino.moveCamera('d','0.2')
+            
             
             self.img = self.getIMG()
             self.QRCode = self.getQRCode()
@@ -244,25 +245,12 @@ class imageViewGUI(basicGUI, QtWidgets.QMainWindow):
         #Move camera back to place
         start_timer()
         for i in range(n_photos):
-            self.moveCamera('u',str(n_photos*0.2))
+            self.arduino.moveCamera('u',str(n_photos*0.2))
             time.sleep(0.25)
         tick('Done Moving Camera Back') 
     
-    def moveCamera(self, direction, cm):
-        assert direction in ['u','d']
-        while True:
-            if (self.board.inWaiting()>0):  # Check if board available
-                self.board.write("%s %s\n"%(direction,cm))
-                break 
     
-    def cameraUpMm(self):
-        self.moveCamera('u','0.1')
-    def cameraUpCm(self):
-        self.moveCamera('u','1')
-    def cameraDownMm(self):
-        self.moveCamera('d','0.1')
-    def cameraDownCm(self):
-        self.moveCamera('d','1')
+
             
 class takePhotoGUI(basicGUI):
     def __init__(self):
@@ -276,10 +264,10 @@ class takePhotoGUI(basicGUI):
         self.moveCameraDownMm = QtWidgets.QPushButton('Down 0.1 cm')
         self.moveCameraDownCm = QtWidgets.QPushButton('Down 1 cm')
         
-        self.moveCameraUpMm.clicked.connect(self.dialog.cameraUpMm)
-        self.moveCameraUpCm.clicked.connect(self.dialog.cameraUpCm)
-        self.moveCameraDownMm.clicked.connect(self.dialog.cameraDownMm)
-        self.moveCameraDownCm.clicked.connect(self.dialog.cameraDownCm)
+        self.moveCameraUpMm.clicked.connect(self.dialog.arduino.cameraUpMm)
+        self.moveCameraUpCm.clicked.connect(self.dialog.arduino.cameraUpCm)
+        self.moveCameraDownMm.clicked.connect(self.dialog.arduino.cameraDownMm)
+        self.moveCameraDownCm.clicked.connect(self.dialog.arduino.cameraDownCm)
         
         self.takePhotoButton = QtWidgets.QPushButton('Take New Photo')
         self.takePhotoButton.clicked.connect(self.dialog.takePhoto)

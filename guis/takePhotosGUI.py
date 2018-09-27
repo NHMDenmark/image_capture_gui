@@ -20,12 +20,14 @@ import pandas as pd
 
 from pyzbar import pyzbar
 from base64 import b64decode
+from functools import partial
 from PyQt5 import QtWidgets, QtCore, QtGui
-from basicGUI import basicGUI, ClickableIMG
+from basicGUI import basicGUI, ClickableIMG, Arduino
 from settings.local_settings import (SFTP_PUBLIC_KEY, ERDA_USERNAME, 
                                      ERDA_SFTP_PASSWORD, ERDA_HOST,
                                      ERDA_PORT, ERDA_FOLDER, DUMP_FOLDER, CACHE_FOLDER,
                                      ARDUINO_PORT)
+from guis.progressDialog import progressDialog
 
 global start_time
 
@@ -40,9 +42,9 @@ def tick(msg = ''):
 
 class takePhotosGUI(basicGUI):
     def __init__(self):
-        super(imageViewGUI, self).__init__()
+        super(takePhotosGUI, self).__init__()
         
-        self.board = serial.Serial(ARDUINO_PORT, 9600)
+        self.arduino = Arduino()
         self.PREVIEW_WIDTH = 1024//2
         self.PREVIEW_HEIGHT = 680//2
         
@@ -57,14 +59,13 @@ class takePhotosGUI(basicGUI):
         self.moveCameraDownMm = QtWidgets.QPushButton('Down 0.1 cm')
         self.moveCameraDownCm = QtWidgets.QPushButton('Down 1 cm')
         
-        self.moveCameraUpMm.clicked.connect(self.cameraUpMm)
-        self.moveCameraUpCm.clicked.connect(self.cameraUpCm)
-        self.moveCameraDownMm.clicked.connect(self.cameraDownMm)
-        self.moveCameraDownCm.clicked.connect(self.cameraDownCm)
+        self.moveCameraUpMm.clicked.connect(self.arduino.cameraUpMm)
+        self.moveCameraUpCm.clicked.connect(self.arduino.cameraUpCm)
+        self.moveCameraDownMm.clicked.connect(self.arduino.cameraDownMm)
+        self.moveCameraDownCm.clicked.connect(self.arduino.cameraDownCm)
         
         self.takePhotoButton = QtWidgets.QPushButton('Take New Photo')
-        self.takePhotoButton.clicked.connect(self.takePhoto)
-        self.takePhotoButton.clicked.connect(self.displayLatestImg)
+        self.takePhotoButton.clicked.connect(self.takeSinglePhoto)
         
         self.takeStackedPhotoButton = QtWidgets.QPushButton('Take New Stacked Photo')
         self.takeStackedPhotoButton.clicked.connect(self.takeStackedPhotos)
@@ -150,7 +151,7 @@ class takePhotosGUI(basicGUI):
     def readQRCode(self, imgPath):
         _format = imgPath.split('.')[-1]
         if _format == 'arw':
-            with rawpy.imread(path) as raw:
+            with rawpy.imread(imgPath) as raw:
                 img =  raw.postprocess()
         else:
             self.warn('Image format at %s not understood. Got %s, should be arw.'%(path,_format))
@@ -169,18 +170,24 @@ class takePhotosGUI(basicGUI):
                           '--force-overwrite', '--filename', imgName])
         
     def takeSinglePhoto(self):
+        progress = progressDialog('Taking Single Photo')
+        progress._open()
         timestamp = time.strftime('%Y%m%d_%H%M%S', time.gmtime())
         imgName = 'singlePhoto.arw'
         
         self.takePhoto(imgName)
+        
+        progress.update(50, 'Reading QR code from photo')
         dumpPath = os.path.join(DUMP_FOLDER, imgName)
         QRCode = self.readQRCode(dumpPath)
         QRCode = self.checkQRCode(QRCode)
         
-        newImgName = 'NHMD' + QRCode + '_' + timestamp + '.arw'
+        newImgName = 'NHMD-' + QRCode + '_' + timestamp + '.arw'
+        progress.update(90, 'Copying file to cache as %s '%newImgName)
         cachePath = os.path.join(CACHE_FOLDER, newImgName)
         
         self.commandLine(['cp',dumpPath,cachePath])
+        progress.close()
 
     def checkQRCode(self, QRCode):
         try:
@@ -193,57 +200,53 @@ class takePhotosGUI(basicGUI):
                 try:
                     _len = len(str(int(QRCode)))
                     if _len == 6:
-                        return QRCode
-                    else:
-                        self.checkQRCode(QRCode)
+                        return str(QRCode)
+                except:
+                    pass
+                return self.checkQRCode(QRCode)
             
-       
-        
     def takeStackedPhotos(self):
         n_photos = 6
+        progress = progressDialog('Taking %s Stacked Photos'%n_photos)
+        progress._open()
+        
         QRCode = ''
         timestamp = time.strftime('%Y%m%d_%H%M%S', time.gmtime())
         
-        print('Taking pics')
-        for i in range(n_photos):
+        for i in range(1,n_photos+1):
+            progress.update(80*i/n_photos, 'Taking Photo %s of %s'%(i,n_photos))
             start_timer()
             tempName = 'Stacked_'+str(i)+'.arw'
             self.takePhoto(imgName=tempName)
             time.sleep(0.1)
-            self.moveCamera('d','0.2')
+            self.arduino.moveCamera('d','0.2')
             tempPath = os.path.join(DUMP_FOLDER, tempName)
-           
-            _QRCode = self.readQRCode(tempPath)
-            try:
-                _len = len(str(int(_QRCode)))
-            except:
-                _len = 0
-            if _len == 6:
-                QRCode = _QRCode
-            print(QRCode)
             
-            QRCode = self.checkQRCode(QRCode)
+            if not len(QRCode):
+                _QRCode = self.readQRCode(tempPath)
+                try:
+                    _len = len(str(int(_QRCode)))
+                except:
+                    _len = 0
+                if _len == 6:
+                    QRCode = _QRCode
+            print(QRCode)
             tick('Done taking one photo for stack')
-#               
-        print('Moving camera back to place')
+        
+        progress.update(82,'Checking QR Code..')
+        QRCode = self.checkQRCode(QRCode)
+
+        for i in range(1,n_photos+1):
+            newImgName = 'NHMD-' + QRCode + '_Stacked_' + timestamp + '_' + str(i) +'.arw'
+            progress.update(80 + 20*i/n_photos,'Copying file to cache as %s '%newImgName)
+            cachePath = os.path.join(CACHE_FOLDER, newImgName)
+        
+            self.commandLine(['cp',dumpPath,cachePath]) 
+            
+        progress.update(99, 'Moving Camera Back Into Place')
         #Move camera back to place
         start_timer()
-        self.moveCamera('u',str(n_photos*0.2))
+        self.arduino.moveCamera('u',str(n_photos*0.2))
         tick('Done Moving Camera Back') 
+        self.progress.close()
     
-    def moveCamera(self, direction, cm):
-        assert direction in ['u','d']
-        while True:
-            if (self.board.inWaiting()>0):  # Check if board available
-                self.board.write("%s %s\n"%(direction,cm))
-                break 
-    
-    def cameraUpMm(self):
-        self.moveCamera('u','0.1')
-    def cameraUpCm(self):
-        self.moveCamera('u','1')
-    def cameraDownMm(self):
-        self.moveCamera('d','0.1')
-    def cameraDownCm(self):
-        self.moveCamera('d','1')
-   
