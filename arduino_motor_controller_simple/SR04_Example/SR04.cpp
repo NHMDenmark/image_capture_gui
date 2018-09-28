@@ -21,7 +21,8 @@ long SR04::Distance() {
     digitalWrite(_triggerPin, LOW);
     delayMicroseconds(2);
     _duration = pulseIn(_echoPin, HIGH, PULSE_TIMEOUT);
-    d = MicrosecondsToCentimeter(_duration);
+    //d = MicrosecondsToCentimeter(_duration);
+    d = MicrosecondsToMilimeter(_duration);
     delay(25);
     return d;
 }
@@ -71,6 +72,12 @@ long SR04::getDistance() {
 
 long SR04::MicrosecondsToCentimeter(long duration) {
     long d = (duration * 100) / 5882;
+    //d = (d == 0)?999:d;
+    return d;
+}
+
+long SR04::MicrosecondsToMilimeter(long duration) {
+    long d = (duration * 1000) / 5882;
     //d = (d == 0)?999:d;
     return d;
 }

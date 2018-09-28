@@ -57,7 +57,7 @@ class GUI(basicGUI):
         
         self.setLayout(self.grid)
         self.show()
-        self.progress.close()
+        self.progress._close()
 
         
 

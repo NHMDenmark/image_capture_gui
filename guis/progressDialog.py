@@ -14,6 +14,7 @@ class progressDialog(basicGUI, QtWidgets.QMainWindow):
     def __init__(self, initial_msg = "Working."):
         super(progressDialog, self).__init__()
         self.initial_msg = initial_msg
+        self.resize(len(initial_msg)*10,48)
         self.initUI()
         
     def initUI(self):
@@ -33,15 +34,18 @@ class progressDialog(basicGUI, QtWidgets.QMainWindow):
     def update(self, value, text = None):
         if text is not None:
             self.text.setText(text)
+            self.resize(len(text)*10,48)
         else:
             newText = self.text.text() + '.'
             self.text.setText(newText)
+            self.resize(len(newText)*10,48)
             
         self.progressBar.setValue(value)
         
         QtWidgets.QApplication.processEvents()
     
-    def close(self):
+    def _close(self):
         self.update(100)
         self.progressBar.close()
+        self.close()
         

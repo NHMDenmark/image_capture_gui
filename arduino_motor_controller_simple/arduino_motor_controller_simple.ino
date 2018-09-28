@@ -90,7 +90,7 @@ void loop() {
   else{
     long sonar_distance = sr04.Distance();
     Serial.print(sonar_distance);  
-    Serial.println("cm");  
+    Serial.println("mm");  
     delay(1000);
   }
 }

@@ -97,8 +97,8 @@ class Arduino():
     def getHeight(self):
         while True:
             line  = self.ser.readline()
-            if 'cm' in line:
-                return float(line.split('cm')[0])
+            if 'mm' in line:
+                return float(line.split('mm')[0])
             print(line)
         
     def cameraUpMm(self):

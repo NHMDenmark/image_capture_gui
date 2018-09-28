@@ -28,6 +28,7 @@ from settings.local_settings import (SFTP_PUBLIC_KEY, ERDA_USERNAME,
                                      ERDA_PORT, ERDA_FOLDER, DUMP_FOLDER, CACHE_FOLDER)
 from guis.progressDialog import progressDialog
 
+
 global start_time
 
 def start_timer():
@@ -49,6 +50,8 @@ class takePhotosGUI(basicGUI):
         
         self.newImgName = ''
         self.imgSuffix = '0'
+        
+        self.previewPath = os.path.join(CACHE_FOLDER,'thumb_preview.jpg')
         self.initUI()
         
     
@@ -83,8 +86,10 @@ class takePhotosGUI(basicGUI):
         if _format == 'arw':
             with rawpy.imread(imgPath) as raw:
                 img =  raw.postprocess()
+        elif _format == 'jpg':
+            img = cv2.imread(imgPath)
         else:
-            self.warn('Image format at %s not understood. Got %s, should be arw.'%(path,_format))
+            self.warn('Image format at %s not understood. Got %s, should be arw.'%(imgPath,_format))
     
         decoded_list = pyzbar.decode(cv2.resize(img,(1024,680)))
         for decoded in decoded_list:
@@ -105,11 +110,11 @@ class takePhotosGUI(basicGUI):
         timestamp = time.strftime('%Y%m%d_%H%M%S', time.gmtime())
         imgName = 'singlePhoto.arw'
         
+        progress.update(10, 'Taking Single Photo..')
         self.takePhoto(imgName)
         
-        progress.update(50, 'Reading QR code from photo')
         dumpPath = os.path.join(DUMP_FOLDER, imgName)
-        QRCode = self.readQRCode(dumpPath)
+        QRCode = self.readQRCode(self.previewPath)
         QRCode = self.checkQRCode(QRCode)
         
         newImgName = 'NHMD-' + QRCode + '_' + timestamp + '.arw'
@@ -117,14 +122,18 @@ class takePhotosGUI(basicGUI):
         cachePath = os.path.join(CACHE_FOLDER, newImgName)
         
         self.commandLine(['cp',dumpPath,cachePath])
-        progress.close()
+        progress._close()
 
     def checkQRCode(self, QRCode):
         try:
             _len = len(str(int(QRCode)))
         except:
             _len = 0
-        if _len != 6:
+        
+        if _len == 6:
+            return str(QRCode)
+            
+        else:
             QRCode, okPressed = QtWidgets.QInputDialog.getInt(self, "QR Code not found","QR Code not found in image, please manually input 6-digit Catalog Number:")
             if okPressed:
                 try:
@@ -140,7 +149,10 @@ class takePhotosGUI(basicGUI):
         progress = progressDialog('Taking %s Stacked Photos'%n_photos)
         progress._open()
         
-        QRCode = ''
+        
+        progress.update(5,'Checking QR Code..')
+        QRCode = self.readQRCode(self.previewPath)
+        QRCode = self.checkQRCode(QRCode)
         timestamp = time.strftime('%Y%m%d_%H%M%S', time.gmtime())
         
         for i in range(1,n_photos+1):
@@ -150,25 +162,11 @@ class takePhotosGUI(basicGUI):
             self.takePhoto(imgName=tempName)
             time.sleep(0.1)
             self.arduino.moveCamera('d','0.2')
-            tempPath = os.path.join(DUMP_FOLDER, tempName)
             
-            if not len(QRCode):
-                _QRCode = self.readQRCode(tempPath)
-                try:
-                    _len = len(str(int(_QRCode)))
-                except:
-                    _len = 0
-                if _len == 6:
-                    QRCode = _QRCode
-            print(QRCode)
-            tick('Done taking one photo for stack')
-        
-        progress.update(82,'Checking QR Code..')
-        QRCode = self.checkQRCode(QRCode)
-
-        for i in range(1,n_photos+1):
             newImgName = 'NHMD-' + QRCode + '_Stacked_' + timestamp + '_' + str(i) +'.arw'
-            progress.update(80 + 20*i/n_photos,'Copying file to cache as %s '%newImgName)
+            progress.update(80*i/n_photos,'Copying file to cache as %s '%newImgName)
+            
+            dumpPath = os.path.join(DUMP_FOLDER, tempName)
             cachePath = os.path.join(CACHE_FOLDER, newImgName)
         
             self.commandLine(['cp',dumpPath,cachePath]) 
@@ -178,5 +176,5 @@ class takePhotosGUI(basicGUI):
         start_timer()
         self.arduino.moveCamera('u',str(n_photos*0.2))
         tick('Done Moving Camera Back') 
-        self.progress.close()
+        progress._close()
     
