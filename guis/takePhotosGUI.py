@@ -25,8 +25,7 @@ from PyQt5 import QtWidgets, QtCore, QtGui
 from basicGUI import basicGUI, ClickableIMG, Arduino
 from settings.local_settings import (SFTP_PUBLIC_KEY, ERDA_USERNAME, 
                                      ERDA_SFTP_PASSWORD, ERDA_HOST,
-                                     ERDA_PORT, ERDA_FOLDER, DUMP_FOLDER, CACHE_FOLDER,
-                                     ARDUINO_PORT)
+                                     ERDA_PORT, ERDA_FOLDER, DUMP_FOLDER, CACHE_FOLDER)
 from guis.progressDialog import progressDialog
 
 global start_time
@@ -78,75 +77,6 @@ class takePhotosGUI(basicGUI):
         self.grid.addWidget(self.takeStackedPhotoButton, 3, 0, 1, 2)
         
         self.setLayout(self.grid)
-        
-        
-    def sendToERDA(self, tempPath, newImgName):
-        if len(str(int(self.QRCode))) != 6:
-            try:
-                if len(str(int(self.QRCodeManualEdit.text()))) == 6:
-                    self.QRCode = len(str(int(self.QRCodeManualEdit.text())))
-                else:
-                    self.warn('QR Code not recognized in image, and manual catalog number entry invalid')
-                    return None
-            except:
-                self.warn('QR Code not recognized in image, and manual catalog number entry invalid')
-        
-        key = paramiko.RSAKey(data=b64decode(SFTP_PUBLIC_KEY))
-        cnopts = pysftp.CnOpts()
-        cnopts.hostkeys.add(ERDA_HOST, 'ssh-rsa', key)
-        
-        sftp = pysftp.Connection(host=ERDA_HOST, username=ERDA_USERNAME, 
-                                 password=ERDA_SFTP_PASSWORD, cnopts=cnopts)
-
-        remote_path = os.path.join(ERDA_FOLDER, newImgName)
-        sftp.put(tempPath,remote_path)
-        sftp.close()
-        
-        #        
-#        print('Sending to ERDA')
-#        if len(QRCode):
-#            for i in range(n_photos):
-#                start_timer()
-#                print('Photo %s'%i)
-#                tempRawPath = os.path.join(self.TEMP_FOLDER, 'Stacked_'+str(i)+'.arw')
-#                tempTiffPath = os.path.join(self.TEMP_FOLDER, 'Stacked_'+str(i)+'.tiff')
-#                
-#                rawImgName = 'NHMD' + QRCode + '_' + timestamp + '_' + str(i) + '.arw'
-#                tiffImgName = 'NHMD' + QRCode + '_' + timestamp + '_' + str(i) + '.tiff'
-#                
-#                self.sendToERDA(tempRawPath, rawImgName)
-#                tick('Done sending one arw to ERDA')
-#                self.sendToERDA(tempTiffPath, tiffImgName)
-#                tick('Done sending one tiff to ERDA')
-        
-    def sendToLocalDir(self):
-        #        print('Copying to Local Storage')
-#        if len(QRCode):
-#            for i in range(n_photos):
-#                start_timer()
-#                tempRawPath = os.path.join(self.TEMP_FOLDER, 'Stacked_'+str(i)+'.arw')
-#                tempTiffPath = os.path.join(self.TEMP_FOLDER, 'Stacked_'+str(i)+'.tiff')
-#                
-#                rawImgName = 'NHMD' + QRCode + '_' + timestamp + '_' + str(i) + '.arw'
-#                tiffImgName = 'NHMD' + QRCode + '_' + timestamp + '_' + str(i) + '.tiff'
-#                
-#                rawImgPath = os.path.join(LOCAL_IMAGE_STORAGE_PATH, rawImgName)
-#                tiffImgPath = os.path.join(LOCAL_IMAGE_STORAGE_PATH, tiffImgName)
-#                
-#                self.commandLine(['cp',tempRawPath,rawImgPath])
-#                tick('Done copying one arw locally')
-#                start_timer()
-#                self.commandLine(['cp',tempTiffPath,tiffImgPath])
-#                tick('Done copying one tiff locally')
-
-        #start_timer()
-        #self.tempPath, self.tempName = self.getLatestImageName(self.TEMP_FOLDER)
-        #name, fileformat = self.tempName.split('.')
-        #if len(name):
-        #    new_name = os.path.join(TEMP_IMAGE_CACHE_PATH, name + '.tiff')
-        #    self.commandLine(['sips', '-s','format','tiff',self.tempPath, '--out',new_name])
-        #tick('Done Converting Photo to tiff')
-        pass
     
     def readQRCode(self, imgPath):
         _format = imgPath.split('.')[-1]
