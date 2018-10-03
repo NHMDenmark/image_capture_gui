@@ -15,7 +15,7 @@ from matplotlib.figure import Figure
 #from matplotlib.backends.qt_compat import QtCore#, QtWidgets, is_pyqt5
 from matplotlib.backends.backend_qt5agg import FigureCanvas
 
-from settings.local_settings import CACHE_FOLDER
+from settings.local_settings import DUMP_FOLDER
 
 
 from guis.basicGUI import basicGUI
@@ -26,7 +26,7 @@ class plotsGUI(basicGUI):
         
         self.width = 400
         self.height = 150
-        self.path = os.path.join(CACHE_FOLDER, 'thumb_preview.jpg')
+        self.path = os.path.join(DUMP_FOLDER, 'thumb_preview.jpg')
         self.n_contrast_history = 100
         self.contrast_history = np.zeros(self.n_contrast_history)
         self.contrast_x_axis = np.linspace(1,self.n_contrast_history,
@@ -66,21 +66,27 @@ class plotsGUI(basicGUI):
             pass
     
     def _update_hist(self):
-        self._hist_ax.clear()
-        
-        gray = cv2.cvtColor(self.img, cv2.COLOR_BGR2GRAY)
-        self._hist_ax.hist(gray.ravel(), 256, [0,256])
-        self._hist_ax.set_title('Histogram')
-        self._hist_ax.figure.canvas.draw()        
+        try:
+            self._hist_ax.clear()
+            
+            gray = cv2.cvtColor(self.img, cv2.COLOR_BGR2GRAY)
+            self._hist_ax.hist(gray.ravel(), 256, [0,256])
+            self._hist_ax.set_title('Histogram')
+            self._hist_ax.figure.canvas.draw()     
+        except:
+            pass
    
     def _update_contrast(self):
-        self._contrast_ax.clear()
-        
-        contrast = cv2.Laplacian(self.img, cv2.CV_64F).var()
-        
-        self.contrast_history = np.roll(self.contrast_history, -1)
-        self.contrast_history[-1] = contrast
-        
-        self._contrast_ax.plot(self.contrast_x_axis, self.contrast_history)
-        self._contrast_ax.set_title('Contrast')
-        self._contrast_ax.figure.canvas.draw()
+        try:
+            self._contrast_ax.clear()
+            
+            contrast = cv2.Laplacian(self.img, cv2.CV_64F).var()
+            
+            self.contrast_history = np.roll(self.contrast_history, -1)
+            self.contrast_history[-1] = contrast
+            
+            self._contrast_ax.plot(self.contrast_x_axis, self.contrast_history)
+            self._contrast_ax.set_title('Contrast')
+            self._contrast_ax.figure.canvas.draw()
+        except:
+            pass

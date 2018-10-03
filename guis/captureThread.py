@@ -10,7 +10,7 @@ import subprocess
 
 from time import sleep
 from PyQt5 import QtCore
-from guis.settings.local_settings import CACHE_FOLDER
+from guis.settings.local_settings import DUMP_FOLDER
 
 #from basicGUI import basicGUI
 
@@ -26,7 +26,7 @@ class capturePreview(QtCore.QThread):
                 try:
                     subprocess.check_output(['gphoto2','--capture-preview',
                                              '--force-overwrite','--filename',
-                                             os.path.join(CACHE_FOLDER,
+                                             os.path.join(DUMP_FOLDER,
                                                           'preview.jpg')]
                                              )
                 except Exception as ex:

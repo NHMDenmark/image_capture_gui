@@ -1,0 +1,10 @@
+*local_*.py
+**.pyc
+**.jpg
+**.arw
+build/**
+dist/**
+gui.spec
+id_rsa*
+.DS_Store
+config*

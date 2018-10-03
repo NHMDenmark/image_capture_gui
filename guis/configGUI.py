@@ -16,9 +16,9 @@ defaultConfig = {'/main/capturesettings/expprogram':'M', #not controllable
                  '/main/status/vendorextension':'Sony PTP Extensions', #not controllable
                  '/main/capturesettings/imagequality':'RAW', #Controllable
                  '/main/actions/opcode':'0x1001,0xparam1,0xparam2', #not controllable
-                 '/main/capturesettings/flashmode':'Fill flash', #Somewhat controllable
-                 '/main/imgsettings/whitebalance':'Shade', #
-                 '/main/imgsettings/colortemperature':'4200', #controllable if whitebalance set to 'Choose Color Temperature'
+                 '/main/capturesettings/flashmode':'Flash off', #Somewhat controllable
+                 '/main/imgsettings/whitebalance':'Preset 1', #
+                 '/main/imgsettings/colortemperature':'5200', #controllable if whitebalance set to 'Choose Color Temperature'
                  '/main/capturesettings/exposurecompensation':'0', #not controllable
                  '/main/capturesettings/exposuremetermode':'Unknown value 8001', #Seems controllable
                  '/main/status/cameramodel':'ILCE-7RM3', #not controllable
@@ -29,13 +29,13 @@ defaultConfig = {'/main/capturesettings/expprogram':'M', #not controllable
                  '/main/status/deviceversion':'1.0', #not controllable
                  '/main/actions/capture':'2', #not controllable
                  '/main/status/serialnumber':'00000000000000003282933003783803', #not controllable
-                 '/main/capturesettings/shutterspeed':'1/10', #Controllable
+                 '/main/capturesettings/shutterspeed':'1/15', #Controllable
                  '/main/actions/movie':'2', #not controllable
                  '/main/actions/bulb':'2', #not controllable
                  '/main/capturesettings/focusmode':'Manual', #not controllable
                  '/main/actions/manualfocus':'0', #not controllable
                  '/main/status/manufacturer':'Sony Corporation', #not controllable
-                 '/main/imgsettings/iso':'3200', #Controllable
+                 '/main/imgsettings/iso':'200', #Controllable
                  '/main/actions/autofocus':'2', #not controllable
                  '/main/capturesettings/capturemode':'Single Shot'} #Controllable
 
@@ -145,8 +145,6 @@ class configGUI(basicGUI, QtWidgets.QMainWindow):
         
         setDefaultButton = QtWidgets.QPushButton('Reset to Default')
         setDefaultButton.clicked.connect(self.setDefaultOptions)
-        closeButton = QtWidgets.QPushButton('Close')
-        closeButton.clicked.connect(self.close)
         showCurrentButton = QtWidgets.QPushButton('Show Current')
         showCurrentButton.clicked.connect(self.showCurrent)
     
@@ -168,8 +166,7 @@ class configGUI(basicGUI, QtWidgets.QMainWindow):
         self.grid.addWidget(self.captureModeEdit, 7, 1)
         self.grid.addWidget(flashMode, 8, 0)
         self.grid.addWidget(self.flashModeEdit, 8, 1)
-        self.grid.addWidget(setDefaultButton, 9, 0)
-        self.grid.addWidget(closeButton, 9, 1)
+        self.grid.addWidget(setDefaultButton, 9, 1)
         #self.grid.addWidget(showCurrentButton, 10, 0)
         
         self.showCurrent()
@@ -289,19 +286,3 @@ class configGUI(basicGUI, QtWidgets.QMainWindow):
 
     
             
-class openConfigGUI(basicGUI):
-    def __init__(self):
-        super(openConfigGUI, self).__init__()
-        self.initUI()
-        
-    def initUI(self):
-        self.configButton = QtWidgets.QPushButton('Open Config')
-        self.configButton.clicked.connect(self.openConfig)
-        self.dialog = configGUI()
-        
-        self.grid.addWidget(self.configButton)
-        self.setLayout(self.grid)
-        
-    def openConfig(self):
-        self.dialog.raise_()
-        self.dialog.show()

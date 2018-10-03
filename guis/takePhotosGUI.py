@@ -51,7 +51,7 @@ class takePhotosGUI(basicGUI):
         self.newImgName = ''
         self.imgSuffix = '0'
         
-        self.previewPath = os.path.join(CACHE_FOLDER,'thumb_preview.jpg')
+        self.previewPath = os.path.join(DUMP_FOLDER,'thumb_preview.jpg')
         self.initUI()
         
     
@@ -89,7 +89,7 @@ class takePhotosGUI(basicGUI):
         elif _format == 'jpg':
             img = cv2.imread(imgPath)
         else:
-            self.warn('Image format at %s not understood. Got %s, should be arw.'%(imgPath,_format))
+            self.warn('Image format at %s not understood. Got %s, should be arw or jpg.'%(imgPath,_format))
     
         decoded_list = pyzbar.decode(cv2.resize(img,(1024,680)))
         for decoded in decoded_list:
@@ -110,18 +110,20 @@ class takePhotosGUI(basicGUI):
         timestamp = time.strftime('%Y%m%d_%H%M%S', time.gmtime())
         imgName = 'singlePhoto.arw'
         
-        progress.update(10, 'Taking Single Photo..')
+        progress.update(20, 'Taking Single Photo..')
         self.takePhoto(imgName)
         
         dumpPath = os.path.join(DUMP_FOLDER, imgName)
         QRCode = self.readQRCode(self.previewPath)
         QRCode = self.checkQRCode(QRCode)
         
-        newImgName = 'NHMD-' + QRCode + '_' + timestamp + '.arw'
-        progress.update(90, 'Copying file to cache as %s '%newImgName)
-        cachePath = os.path.join(CACHE_FOLDER, newImgName)
-        
-        self.commandLine(['cp',dumpPath,cachePath])
+        if len(QRCode):
+            newImgName = 'NHMD-' + QRCode + '_' + timestamp + '.arw'
+            progress.update(90, 'Copying file to cache as %s '%newImgName)
+            cachePath = os.path.join(CACHE_FOLDER, newImgName)
+            
+            self.commandLine(['cp',dumpPath,cachePath])
+            self.warn('Done Taking Photo')
         progress._close()
 
     def checkQRCode(self, QRCode):
@@ -143,6 +145,9 @@ class takePhotosGUI(basicGUI):
                 except:
                     pass
                 return self.checkQRCode(QRCode)
+            else:
+                self.warn('No Photo Taken')
+                return ''
             
     def takeStackedPhotos(self):
         n_photos = 6
@@ -153,28 +158,31 @@ class takePhotosGUI(basicGUI):
         progress.update(5,'Checking QR Code..')
         QRCode = self.readQRCode(self.previewPath)
         QRCode = self.checkQRCode(QRCode)
-        timestamp = time.strftime('%Y%m%d_%H%M%S', time.gmtime())
         
-        for i in range(1,n_photos+1):
-            progress.update(80*i/n_photos, 'Taking Photo %s of %s'%(i,n_photos))
-            start_timer()
-            tempName = 'Stacked_'+str(i)+'.arw'
-            self.takePhoto(imgName=tempName)
-            time.sleep(0.1)
-            self.arduino.moveCamera('d','0.2')
-            
-            newImgName = 'NHMD-' + QRCode + '_Stacked_' + timestamp + '_' + str(i) +'.arw'
-            progress.update(80*i/n_photos,'Copying file to cache as %s '%newImgName)
-            
-            dumpPath = os.path.join(DUMP_FOLDER, tempName)
-            cachePath = os.path.join(CACHE_FOLDER, newImgName)
+        if len(QRCode):    
+            timestamp = time.strftime('%Y%m%d_%H%M%S', time.gmtime())
         
-            self.commandLine(['cp',dumpPath,cachePath]) 
+            for i in range(0,n_photos):
+                progress.update(80*i/n_photos, 'Taking Photo %s of %s'%(i+1,n_photos))
+                start_timer()
+                tempName = 'Stacked_'+str(i)+'.arw'
+                self.takePhoto(imgName=tempName)
+                time.sleep(0.1)
+                self.arduino.moveCamera('d','0.2')
+                time.sleep(1)
+                
+                newImgName = 'NHMD-' + QRCode + '_' + timestamp + '_Stacked_' + str(i) + '.arw'
+                progress.update(80*i/n_photos + 5)
+                
+                dumpPath = os.path.join(DUMP_FOLDER, tempName)
+                cachePath = os.path.join(CACHE_FOLDER, newImgName)
             
-        progress.update(99, 'Moving Camera Back Into Place')
-        #Move camera back to place
-        start_timer()
-        self.arduino.moveCamera('u',str(n_photos*0.2))
-        tick('Done Moving Camera Back') 
+                self.commandLine(['cp',dumpPath,cachePath]) 
+                
+            progress.update(99, 'Moving Camera Back Into Place')
+
+            self.arduino.moveCamera('u',str(n_photos*0.2))
+            self.warn('Done Taking Photos')
+
         progress._close()
     

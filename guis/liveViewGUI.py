@@ -11,13 +11,13 @@ import cv2
 from pyzbar import pyzbar
 from PyQt5 import QtWidgets, QtCore, QtGui
 from basicGUI import basicGUI, ClickableIMG
-from settings.local_settings import CACHE_FOLDER
+from settings.local_settings import DUMP_FOLDER
 
 class liveViewGUI(basicGUI):
     def __init__(self):
         super(liveViewGUI, self).__init__()
         
-        self.preview_path = os.path.join(CACHE_FOLDER,'thumb_preview.jpg')
+        self.preview_path = os.path.join(DUMP_FOLDER,'thumb_preview.jpg')
         self.timer = QtCore.QTimer()
         self.timer.timeout.connect(self.updatePreview)
         self.timer.start(500)

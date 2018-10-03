@@ -51,7 +51,7 @@ class GUI(basicGUI):
   
         self.grid.addWidget(self.instructions, 0, 0)
         self.grid.addWidget(self.config, 1, 0, 2, 1)
-        self.grid.addWidget(self.plots, 3, 0, 5, 1)
+        self.grid.addWidget(self.plots, 3, 0, 6, 1)
         self.grid.addWidget(self.live_view, 0, 1, 8, 1)
         self.grid.addWidget(self.takePhoto, 8, 1, 1, 1)
         
