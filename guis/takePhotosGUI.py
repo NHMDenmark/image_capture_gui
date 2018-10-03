@@ -56,6 +56,7 @@ class takePhotosGUI(basicGUI):
         
     
     def initUI(self):
+        
         self.moveCameraUpMm = QtWidgets.QPushButton('Up 0.1 cm')
         self.moveCameraUpCm = QtWidgets.QPushButton('Up 1 cm')
         self.moveCameraDownMm = QtWidgets.QPushButton('Down 0.1 cm')
@@ -66,20 +67,23 @@ class takePhotosGUI(basicGUI):
         self.moveCameraDownMm.clicked.connect(self.arduino.cameraDownMm)
         self.moveCameraDownCm.clicked.connect(self.arduino.cameraDownCm)
         
-        self.takePhotoButton = QtWidgets.QPushButton('Take New Photo')
-        self.takePhotoButton.clicked.connect(self.takeSinglePhoto)
+        self.undersideCheckBox = QtWidgets.QCheckBox('Underside?')
+        #self.takePhotoButton = QtWidgets.QPushButton('Take New Photo')
+        #self.takePhotoButton.clicked.connect(self.takeSinglePhoto)
         
         self.takeStackedPhotoButton = QtWidgets.QPushButton('Take New Stacked Photo')
         self.takeStackedPhotoButton.clicked.connect(self.takeStackedPhotos)
         
-        self.grid.addWidget(self.moveCameraUpMm, 0, 0)
-        self.grid.addWidget(self.moveCameraDownMm, 0, 1)
-        self.grid.addWidget(self.moveCameraUpCm, 1, 0)
-        self.grid.addWidget(self.moveCameraDownCm, 1, 1)
-        self.grid.addWidget(self.takePhotoButton, 2, 0, 1, 2)
+        self.grid.addWidget(self.undersideCheckBox, 0, 0)
+        self.grid.addWidget(self.moveCameraUpMm, 1, 0)
+        self.grid.addWidget(self.moveCameraDownMm, 1, 1)
+        self.grid.addWidget(self.moveCameraUpCm, 2, 0)
+        self.grid.addWidget(self.moveCameraDownCm, 2, 1)
+        #self.grid.addWidget(self.takePhotoButton, 2, 0, 1, 2)
         self.grid.addWidget(self.takeStackedPhotoButton, 3, 0, 1, 2)
         
         self.setLayout(self.grid)
+    
     
     def readQRCode(self, imgPath):
         _format = imgPath.split('.')[-1]
@@ -117,8 +121,14 @@ class takePhotosGUI(basicGUI):
         QRCode = self.readQRCode(self.previewPath)
         QRCode = self.checkQRCode(QRCode)
         
+        
+        if self.undersideCheckBox.isChecked():
+            underside = '_U'
+        else:
+            underside = '_T'
+        
         if len(QRCode):
-            newImgName = 'NHMD-' + QRCode + '_' + timestamp + '.arw'
+            newImgName = 'NHMD-' + QRCode + underside + '_' + timestamp + '.arw'
             progress.update(90, 'Copying file to cache as %s '%newImgName)
             cachePath = os.path.join(CACHE_FOLDER, newImgName)
             
@@ -159,25 +169,36 @@ class takePhotosGUI(basicGUI):
         QRCode = self.readQRCode(self.previewPath)
         QRCode = self.checkQRCode(QRCode)
         
+        
+        if self.undersideCheckBox.isChecked():
+            underside = '_U'
+        else:
+            underside = '_T'
+        
+        
         if len(QRCode):    
             timestamp = time.strftime('%Y%m%d_%H%M%S', time.gmtime())
         
             for i in range(0,n_photos):
-                progress.update(80*i/n_photos, 'Taking Photo %s of %s'%(i+1,n_photos))
-                start_timer()
+                progress.update(100*i/n_photos, 'Taking Photo %s of %s'%(i+1,n_photos))
                 tempName = 'Stacked_'+str(i)+'.arw'
                 self.takePhoto(imgName=tempName)
                 time.sleep(0.1)
                 self.arduino.moveCamera('d','0.2')
                 time.sleep(1)
                 
-                newImgName = 'NHMD-' + QRCode + '_' + timestamp + '_Stacked_' + str(i) + '.arw'
-                progress.update(80*i/n_photos + 5)
+                newImgName = 'NHMD-' + QRCode + underside + '_' + timestamp + '_Stacked_' + str(i) + '.arw'
+                progress.update(100*i/n_photos + 5)
                 
                 dumpPath = os.path.join(DUMP_FOLDER, tempName)
                 cachePath = os.path.join(CACHE_FOLDER, newImgName)
             
                 self.commandLine(['cp',dumpPath,cachePath]) 
+                if i == 0:
+                    self.openIMG(dumpPath)
+                    
+                if i == 5:
+                    self.openIMG(dumpPath)
                 
             progress.update(99, 'Moving Camera Back Into Place')
 
@@ -185,4 +206,7 @@ class takePhotosGUI(basicGUI):
             self.warn('Done Taking Photos')
 
         progress._close()
+        
+    def openIMG(self, path):
+        self.commandLine(['open', path])
     
