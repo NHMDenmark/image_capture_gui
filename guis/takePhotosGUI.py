@@ -173,9 +173,9 @@ class takePhotosGUI(basicGUI):
 				self.undersideCheckBox.setChecked(True)
         
         if self.undersideCheckBox.isChecked():
-            underside = '_U'
+            underside = '_V'
         else:
-            underside = '_T'
+            underside = '_D'
 	
 		return underside
 	
