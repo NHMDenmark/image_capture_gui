@@ -6,7 +6,7 @@ Created on Sun Sep  2 19:27:30 2018
 @author: robertahunt
 """
 import sys
-
+import time
 import warnings
 import subprocess
 
@@ -74,7 +74,7 @@ class basicGUI(QtWidgets.QWidget):
 class Arduino():
     def __init__(self):
         self.port = self.getArduinoPort()
-        self.ser = Serial(self.port, 9600)
+        self.ser = Serial(self.port, 9600, timeout=0.1)
         
     def getArduinoPort(self):
         ports = list(list_ports.comports())
@@ -85,11 +85,21 @@ class Arduino():
             return None
         
     def moveCamera(self, direction, cm):
+        i = 0
         assert direction in ['u','d']
-        while True:
-            if (self.ser.inWaiting()>0):  # Check if board available
-                self.ser.write("%s %s\n"%(direction,cm))
-                break 
+        self.ser.write("%s %s\n"%(direction,cm))
+        #while True:
+        #    print('Trying to write to arduino')
+        #    if (self.ser.inWaiting()>0):  # Check if board available
+        #        self.ser.write("%s %s\n"%(direction,cm))
+        #        break 
+        #    i+=1
+        #    time.sleep(0.1)
+        #    if i > 50:
+        #        
+        #        self.ser.write("%s %s\n"%(direction,cm))
+        #        self.warn('Could not move camera... try restarting arduino')
+        #        break
     
     def readline(self):
         return self.ser.readline()

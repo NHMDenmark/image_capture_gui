@@ -62,7 +62,6 @@ class checksGUI(basicGUI):
     def testArduinoConnection(self):
         try:
             self.arduino = Arduino()
-            self.arduino.readline()
         except Exception as ex:
             print(str(ex))
             self.warn('Error xkcd730: Unable to connect to Arduino. Please make sure arduino has power and is connected to the computer.',_exit=True)

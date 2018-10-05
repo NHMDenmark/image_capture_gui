@@ -65,7 +65,12 @@ def createTiff(arwPath):
     
 def getARWFiles(folder):
     ARWFiles = [f for f in getFiles(folder) if f.endswith('.arw')]
-    return ARWFiles
+    if len(ARWFiles):
+        paths = [os.path.join(folder, image) for image in ARWFiles]
+        paths.sort(key=os.path.getctime)
+        return [path.split('/')[-1] for path in paths]
+    else:
+        return '', ''
 
 def getFiles(folder):
     return os.listdir(folder)
@@ -83,55 +88,53 @@ def deleteNonARWFilesFromLocalCache():
             path = os.path.join(CACHE_FOLDER, local_file)
             print('Deleting %s'%path)
             deleteFile(path)
-            
-def copyToLocalStorage(currentPath, newPath):
-    subprocess.check_output(['cp', currentPath, newPath])
     
 if __name__ == '__main__':
-    while True:
-        sleep(10)
-        try:
-            deleteNonARWFilesFromLocalCache()
-            print('starting ERDA')
-            erda = ERDA()
-            local_files = getARWFiles(CACHE_FOLDER)
-            erda_files = erda.getFiles(ERDA_FOLDER)
+    #while True:
+    #    sleep(1)
+    #    try:
+    deleteNonARWFilesFromLocalCache()
+    print('starting ERDA')
+    erda = ERDA()
     
-            
-            for local_file in local_files:
-                print('looking at file: %s'%local_file)
-                arwCachePath = os.path.join(CACHE_FOLDER, local_file)
-                print('creating tiff')
-                tiffCachePath = createTiff(arwCachePath)
-                tiff_name = tiffCachePath.split('/')[-1]
-                
-                arwLocalPath = os.path.join(STORAGE_FOLDER, local_file)
-                tiffLocalPath = os.path.join(STORAGE_FOLDER, tiff_name)
-                
-                print('Copying ARW Locally')
-                copyToLocalStorage(arwCachePath, arwLocalPath)
-                
-                #what happens if file already uploaded
-                
-                
-                arwERDAPath = os.path.join(ERDA_FOLDER, local_file)
-                tiffERDAPath = os.path.join(ERDA_FOLDER, tiff_name)
-                
-                erda.upload(arwCachePath, arwERDAPath)
-                uploadedARW = erda.checkUploaded(arwERDAPath, arwCachePath)
-                
-                erda.upload(tiffCachePath, tiffERDAPath)
-                uploadedTiff = erda.checkUploaded(tiffERDAPath, tiffCachePath)
-                
-                if uploadedARW & uploadedTiff:
-                    deleteFile(arwCachePath)
-                    deleteFile(tiffCachePath)
-                
-            erda.close()
-        except Exception as ex:
-            if 'erda' in locals():
-                if hasattr(erda, 'sftp'):
-                    erda.sftp.close()
+    print('Getting lists of files')
+    local_files = getARWFiles(CACHE_FOLDER)
+    erda_files = erda.getFiles(ERDA_FOLDER)
+
+    
+    for local_file in local_files:
+        print('looking at file: %s'%local_file)
+        arwCachePath = os.path.join(CACHE_FOLDER, local_file)
+        print('creating tiff')
+        tiffCachePath = createTiff(arwCachePath)
+        tiff_name = tiffCachePath.split('/')[-1]
+        
+        arwLocalPath = os.path.join(STORAGE_FOLDER, local_file)
+        tiffLocalPath = os.path.join(STORAGE_FOLDER, tiff_name)
+        
+        #what happens if file already uploaded
+        
+        
+        arwERDAPath = os.path.join(ERDA_FOLDER, local_file)
+        tiffERDAPath = os.path.join(ERDA_FOLDER, tiff_name)
+        
+        erda.upload(tiffCachePath, tiffERDAPath)
+        uploadedTiff = erda.checkUploaded(tiffERDAPath, tiffCachePath)
+        
+        erda.upload(arwCachePath, arwERDAPath)
+        uploadedARW = erda.checkUploaded(arwERDAPath, arwCachePath)
+        
+        
+        if uploadedARW & uploadedTiff:
+            print('Deleting Files')
+            deleteFile(arwCachePath)
+            deleteFile(tiffCachePath)
+        
+    erda.close()
+        #except Exception as ex:
+        #    if 'erda' in locals():
+        #        if hasattr(erda, 'sftp'):
+        #            erda.sftp.close()
                     
-            print(str(ex))
+        #    print(str(ex))
     
