@@ -88,10 +88,10 @@ void loop() {
       }
   }
   else{
-    long sonar_distance = sr04.Distance();
-    Serial.print(sonar_distance);  
-    Serial.println("mm");  
-    delay(1000);
+    //long sonar_distance = sr04.Distance();
+    //Serial.print(sonar_distance);  
+    //Serial.println("mm");  
+    //delay(1000);
   }
 }
 

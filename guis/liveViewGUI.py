@@ -10,8 +10,8 @@ import cv2
 
 from pyzbar import pyzbar
 from PyQt5 import QtWidgets, QtCore, QtGui
-from basicGUI import basicGUI, ClickableIMG
-from settings.local_settings import DUMP_FOLDER
+from guis.basicGUI import basicGUI, ClickableIMG
+from guis.settings.local_settings import DUMP_FOLDER
 
 class liveViewGUI(basicGUI):
     def __init__(self):

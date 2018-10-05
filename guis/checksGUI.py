@@ -30,8 +30,8 @@ class checksGUI(basicGUI):
         self.progress.update(40,'Testing Arduino Connection')
         self.testArduinoConnection()
         
-        self.progress.update(60,'Testing Sonar Data Collection')
-        self.testGetSonarData()
+        #self.progress.update(60,'Testing Sonar Data Collection')
+        #self.testGetSonarData()
         
         #self.progress.update(80,'Testing Camera Movement')
         #self.testMoveCamera()

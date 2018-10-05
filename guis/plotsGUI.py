@@ -15,7 +15,7 @@ from matplotlib.figure import Figure
 #from matplotlib.backends.qt_compat import QtCore#, QtWidgets, is_pyqt5
 from matplotlib.backends.backend_qt5agg import FigureCanvas
 
-from settings.local_settings import DUMP_FOLDER
+from guis.settings.local_settings import DUMP_FOLDER
 
 
 from guis.basicGUI import basicGUI

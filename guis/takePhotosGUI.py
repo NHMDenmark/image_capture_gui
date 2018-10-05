@@ -8,7 +8,6 @@ Created on Sun Sep  2 20:43:32 2018
 import os
 import cv2
 import time
-import Queue
 import rawpy
 import serial
 import pysftp
@@ -22,8 +21,8 @@ from pyzbar import pyzbar
 from base64 import b64decode
 from functools import partial
 from PyQt5 import QtWidgets, QtCore, QtGui
-from basicGUI import basicGUI, ClickableIMG, Arduino
-from settings.local_settings import (SFTP_PUBLIC_KEY, ERDA_USERNAME, 
+from guis.basicGUI import basicGUI, ClickableIMG, Arduino
+from guis.settings.local_settings import (SFTP_PUBLIC_KEY, ERDA_USERNAME, 
                                      ERDA_SFTP_PASSWORD, ERDA_HOST,
                                      ERDA_PORT, ERDA_FOLDER, DUMP_FOLDER, CACHE_FOLDER)
 from guis.progressDialog import progressDialog
@@ -45,8 +44,8 @@ class takePhotosGUI(basicGUI):
         super(takePhotosGUI, self).__init__()
         
         self.arduino = Arduino()
-        self.PREVIEW_WIDTH = 1024//2
-        self.PREVIEW_HEIGHT = 680//2
+        self.PREVIEW_WIDTH = 1024//4
+        self.PREVIEW_HEIGHT = 680//4
         
         self.newImgName = ''
         self.imgSuffix = '0'
@@ -56,7 +55,14 @@ class takePhotosGUI(basicGUI):
         
     
     def initUI(self):
+        self.imgView = ClickableIMG(self)
+        self.imgView.setMinimumSize(self.PREVIEW_WIDTH, self.PREVIEW_HEIGHT)
+        self.imgView.clicked.connect(self.openIMG)
         
+        header = self.headerLabel('Latest image')
+        self.imgDesc = QtWidgets.QLabel('Latest image in folder: %s'% DUMP_FOLDER)
+		
+		
         self.moveCameraUpMm = QtWidgets.QPushButton('Up 0.1 cm')
         self.moveCameraUpCm = QtWidgets.QPushButton('Up 1 cm')
         self.moveCameraDownMm = QtWidgets.QPushButton('Down 0.1 cm')
@@ -68,6 +74,7 @@ class takePhotosGUI(basicGUI):
         self.moveCameraDownCm.clicked.connect(self.arduino.cameraDownCm)
         
         self.undersideCheckBox = QtWidgets.QCheckBox('Underside?')
+        self.autoUndersideCheckBox = QtWidgets.QCheckBox('Auto Switch Underside?')
         #self.takePhotoButton = QtWidgets.QPushButton('Take New Photo')
         #self.takePhotoButton.clicked.connect(self.takeSinglePhoto)
         
@@ -81,6 +88,8 @@ class takePhotosGUI(basicGUI):
         self.grid.addWidget(self.moveCameraDownCm, 2, 1)
         #self.grid.addWidget(self.takePhotoButton, 2, 0, 1, 2)
         self.grid.addWidget(self.takeStackedPhotoButton, 3, 0, 1, 2)
+		self.grid.addWidget(self.imgDesc, 0, 2)
+		self.grid.addWidget(self.imgView, 1, 2, 3, 1)
         
         self.setLayout(self.grid)
     
@@ -121,11 +130,7 @@ class takePhotosGUI(basicGUI):
         QRCode = self.readQRCode(self.previewPath)
         QRCode = self.checkQRCode(QRCode)
         
-        
-        if self.undersideCheckBox.isChecked():
-            underside = '_U'
-        else:
-            underside = '_T'
+        underside = self.toggleAndCheckUnderside()
         
         if len(QRCode):
             newImgName = 'NHMD-' + QRCode + underside + '_' + timestamp + '.arw'
@@ -159,6 +164,21 @@ class takePhotosGUI(basicGUI):
                 self.warn('No Photo Taken')
                 return ''
             
+			
+	def toggleAndCheckUnderside(self):
+		if self.autoUndersideCheckBox.isChecked():
+			if self.undersideCheckBox.isChecked():
+				self.undersideCheckBox.setChecked(False)
+			else:
+				self.undersideCheckBox.setChecked(True)
+        
+        if self.undersideCheckBox.isChecked():
+            underside = '_U'
+        else:
+            underside = '_T'
+	
+		return underside
+	
     def takeStackedPhotos(self):
         n_photos = 6
         progress = progressDialog('Taking %s Stacked Photos'%n_photos)
@@ -169,12 +189,7 @@ class takePhotosGUI(basicGUI):
         QRCode = self.readQRCode(self.previewPath)
         QRCode = self.checkQRCode(QRCode)
         
-        
-        if self.undersideCheckBox.isChecked():
-            underside = '_U'
-        else:
-            underside = '_T'
-        
+		underside = self.toggleAndCheckUnderside()
         
         if len(QRCode):    
             timestamp = time.strftime('%Y%m%d_%H%M%S', time.gmtime())
@@ -206,7 +221,38 @@ class takePhotosGUI(basicGUI):
             self.warn('Done Taking Photos')
 
         progress._close()
+		self.displayLatestImg()
+     
+    def displayLatestImg(self):
+        tempPath, tempName = self.getLatestImageName(CACHE_FOLDER)
+        self.imgDesc.setText('Latest image in folder: %s'% tempPath)
+        img = self.getIMG()
         
+        _format = tempPath.split('.')[-1]
+        imgResized = QtGui.QImage(img.data, img.shape[1], img.shape[0],
+                               img.shape[1]*3, QtGui.QImage.Format_RGB888)
+        imgResized = QtGui.QPixmap.fromImage(imgResized).scaled(self.PREVIEW_WIDTH, self.PREVIEW_HEIGHT, 
+                                                   QtCore.Qt.KeepAspectRatio)
+
+        self.imgView.setPixmap(imgResized)
+        
+		
+	def getLatestImageName(self):
+        images = [image for image in os.listdir(DUMP_FOLDER) if image.split('.')[-1] in ['arw']]
+        if len(images):
+            latest_image_path = max([os.path.join(DUMP_FOLDER, image) for image in images], key=os.path.getctime)
+            return latest_image_path, latest_image_path.split('/')[-1]
+        else:
+            return '', ''
+
+	def getIMG(self, path):
+        _format = path.split('.')[-1]
+        if _format == 'arw':
+            with rawpy.imread(path) as raw:
+                return raw.postprocess()
+        else:
+            self.warn('Image format in folder not understood.%s'%_format)
+	 
     def openIMG(self, path):
         self.commandLine(['open', path])
     

@@ -10,7 +10,7 @@ import subprocess
 
 from time import sleep
 from PyQt5 import QtWidgets
-from basicGUI import basicGUI
+from guis.basicGUI import basicGUI
 
 defaultConfig = {'/main/capturesettings/expprogram':'M', #not controllable
                  '/main/status/vendorextension':'Sony PTP Extensions', #not controllable
