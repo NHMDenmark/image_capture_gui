@@ -1,0 +1,723 @@
+INFO:root:Getting lists of files
+INFO:root:Starting ERDA
+WARNING:root:Exception encountered: Unable to connect to io.erda.dk: [Errno 60] Operation timed out
+INFO:root:Getting lists of files
+INFO:root:Starting ERDA
+WARNING:root:Exception encountered: Unable to connect to io.erda.dk: [Errno 60] Operation timed out
+INFO:root:Getting lists of files
+INFO:root:Starting ERDA
+WARNING:root:Exception encountered: Unable to connect to io.erda.dk: [Errno 60] Operation timed out
+INFO:root:Getting lists of files
+INFO:root:Starting ERDA
+WARNING:root:Exception encountered: Unable to connect to io.erda.dk: [Errno 60] Operation timed out
+INFO:root:Getting lists of files
+INFO:root:Starting ERDA
+WARNING:root:Exception encountered: Unable to connect to io.erda.dk: [Errno 60] Operation timed out
+INFO:root:Getting lists of files
+INFO:root:Starting ERDA
+WARNING:root:Exception encountered: Unable to connect to io.erda.dk: [Errno 60] Operation timed out
+INFO:root:Getting lists of files
+INFO:root:Starting ERDA
+WARNING:root:Exception encountered: Unable to connect to io.erda.dk: [Errno 60] Operation timed out
+INFO:root:Getting lists of files
+INFO:root:Starting ERDA
+WARNING:root:Exception encountered: Unable to connect to io.erda.dk: [Errno 60] Operation timed out
+INFO:root:Getting lists of files
+INFO:root:Starting ERDA
+WARNING:root:Exception encountered: Unable to connect to io.erda.dk: [Errno 60] Operation timed out
+INFO:root:Getting lists of files
+INFO:root:Starting ERDA
+WARNING:root:Exception encountered: Unable to connect to io.erda.dk: [Errno 60] Operation timed out
+INFO:root:Getting lists of files
+INFO:root:Starting ERDA
+WARNING:root:Exception encountered: Unable to connect to io.erda.dk: [Errno 60] Operation timed out
+INFO:root:Getting lists of files
+INFO:root:Starting ERDA
+WARNING:root:Exception encountered: Unable to connect to io.erda.dk: [Errno 60] Operation timed out
+INFO:root:Getting lists of files
+INFO:root:Starting ERDA
+WARNING:root:Exception encountered: Unable to connect to io.erda.dk: [Errno 60] Operation timed out
+INFO:root:Getting lists of files
+INFO:root:Starting ERDA
+WARNING:root:Exception encountered: Unable to connect to io.erda.dk: [Errno 60] Operation timed out
+INFO:root:Getting lists of files
+INFO:root:Starting ERDA
+WARNING:root:Exception encountered: Unable to connect to io.erda.dk: [Errno 60] Operation timed out
+INFO:root:Getting lists of files
+INFO:root:Starting ERDA
+WARNING:root:Exception encountered: Unable to connect to io.erda.dk: [Errno 60] Operation timed out
+INFO:root:Getting lists of files
+INFO:root:Starting ERDA
+WARNING:root:Exception encountered: Unable to connect to io.erda.dk: [Errno 60] Operation timed out
+INFO:root:Getting lists of files
+INFO:root:Starting ERDA
+WARNING:root:Exception encountered: Unable to connect to io.erda.dk: [Errno 60] Operation timed out
+INFO:root:Getting lists of files
+INFO:root:Starting ERDA
+WARNING:root:Exception encountered: Unable to connect to io.erda.dk: [Errno 60] Operation timed out
+INFO:root:Getting lists of files
+INFO:root:Starting ERDA
+WARNING:root:Exception encountered: Unable to connect to io.erda.dk: [Errno 60] Operation timed out
+INFO:root:Getting lists of files
+INFO:root:Starting ERDA
+WARNING:root:Exception encountered: Unable to connect to io.erda.dk: [Errno 60] Operation timed out
+INFO:root:Getting lists of files
+INFO:root:Starting ERDA
+WARNING:root:Exception encountered: Unable to connect to io.erda.dk: [Errno 60] Operation timed out
+INFO:root:Getting lists of files
+INFO:root:Starting ERDA
+WARNING:root:Exception encountered: Unable to connect to io.erda.dk: [Errno 60] Operation timed out
+INFO:root:Getting lists of files
+INFO:root:Starting ERDA
+WARNING:root:Exception encountered: Unable to connect to io.erda.dk: [Errno 60] Operation timed out
+INFO:root:Getting lists of files
+INFO:root:Starting ERDA
+WARNING:root:Exception encountered: Unable to connect to io.erda.dk: [Errno 60] Operation timed out
+INFO:root:Getting lists of files
+INFO:root:Starting ERDA
+WARNING:root:Exception encountered: Unable to connect to io.erda.dk: [Errno 60] Operation timed out
+INFO:root:Getting lists of files
+INFO:root:Starting ERDA
+WARNING:root:Exception encountered: Unable to connect to io.erda.dk: [Errno 60] Operation timed out
+INFO:root:Getting lists of files
+INFO:root:Starting ERDA
+WARNING:root:Exception encountered: Unable to connect to io.erda.dk: [Errno 60] Operation timed out
+INFO:root:Getting lists of files
+INFO:root:Starting ERDA
+WARNING:root:Exception encountered: Unable to connect to io.erda.dk: [Errno 60] Operation timed out
+INFO:root:Getting lists of files
+INFO:root:Starting ERDA
+WARNING:root:Exception encountered: Unable to connect to io.erda.dk: [Errno 60] Operation timed out
+INFO:root:Getting lists of files
+INFO:root:Starting ERDA
+WARNING:root:Exception encountered: Unable to connect to io.erda.dk: [Errno 60] Operation timed out
+INFO:root:Getting lists of files
+INFO:root:Starting ERDA
+WARNING:root:Exception encountered: Unable to connect to io.erda.dk: [Errno 60] Operation timed out
+INFO:root:Getting lists of files
+INFO:root:Starting ERDA
+WARNING:root:Exception encountered: Unable to connect to io.erda.dk: [Errno 60] Operation timed out
+INFO:root:Getting lists of files
+INFO:root:Starting ERDA
+WARNING:root:Exception encountered: Unable to connect to io.erda.dk: [Errno 60] Operation timed out
+INFO:root:Getting lists of files
+INFO:root:Starting ERDA
+WARNING:root:Exception encountered: Unable to connect to io.erda.dk: [Errno 60] Operation timed out
+INFO:root:Getting lists of files
+INFO:root:Starting ERDA
+WARNING:root:Exception encountered: Unable to connect to io.erda.dk: [Errno 60] Operation timed out
+INFO:root:Getting lists of files
+INFO:root:Starting ERDA
+WARNING:root:Exception encountered: Unable to connect to io.erda.dk: [Errno 60] Operation timed out
+INFO:root:Getting lists of files
+INFO:root:Starting ERDA
+WARNING:root:Exception encountered: Unable to connect to io.erda.dk: [Errno 60] Operation timed out
+INFO:root:Getting lists of files
+INFO:root:Starting ERDA
+WARNING:root:Exception encountered: Unable to connect to io.erda.dk: [Errno 60] Operation timed out
+INFO:root:Getting lists of files
+INFO:root:Starting ERDA
+WARNING:root:Exception encountered: Unable to connect to io.erda.dk: [Errno 60] Operation timed out
+INFO:root:Getting lists of files
+INFO:root:Starting ERDA
+WARNING:root:Exception encountered: Unable to connect to io.erda.dk: [Errno 60] Operation timed out
+INFO:root:Getting lists of files
+INFO:root:Starting ERDA
+WARNING:root:Exception encountered: Unable to connect to io.erda.dk: [Errno 60] Operation timed out
+INFO:root:Getting lists of files
+INFO:root:Starting ERDA
+WARNING:root:Exception encountered: Unable to connect to io.erda.dk: [Errno 60] Operation timed out
+INFO:root:Getting lists of files
+INFO:root:Starting ERDA
+WARNING:root:Exception encountered: Unable to connect to io.erda.dk: [Errno 60] Operation timed out
+INFO:root:Getting lists of files
+INFO:root:Starting ERDA
+WARNING:root:Exception encountered: Unable to connect to io.erda.dk: [Errno 60] Operation timed out
+INFO:root:Getting lists of files
+INFO:root:Starting ERDA
+WARNING:root:Exception encountered: Unable to connect to io.erda.dk: [Errno 60] Operation timed out
+INFO:root:Getting lists of files
+INFO:root:Starting ERDA
+WARNING:root:Exception encountered: Unable to connect to io.erda.dk: [Errno 60] Operation timed out
+INFO:root:Getting lists of files
+INFO:root:Starting ERDA
+WARNING:root:Exception encountered: Unable to connect to io.erda.dk: [Errno 60] Operation timed out
+INFO:root:Getting lists of files
+INFO:root:Starting ERDA
+WARNING:root:Exception encountered: Unable to connect to io.erda.dk: [Errno 60] Operation timed out
+INFO:root:Getting lists of files
+INFO:root:Starting ERDA
+WARNING:root:Exception encountered: Unable to connect to io.erda.dk: [Errno 60] Operation timed out
+INFO:root:Getting lists of files
+INFO:root:Starting ERDA
+WARNING:root:Exception encountered: Unable to connect to io.erda.dk: [Errno 60] Operation timed out
+INFO:root:Getting lists of files
+INFO:root:Starting ERDA
+WARNING:root:Exception encountered: Unable to connect to io.erda.dk: [Errno 60] Operation timed out
+INFO:root:Getting lists of files
+INFO:root:Starting ERDA
+WARNING:root:Exception encountered: Unable to connect to io.erda.dk: [Errno 60] Operation timed out
+INFO:root:Getting lists of files
+INFO:root:Starting ERDA
+WARNING:root:Exception encountered: Unable to connect to io.erda.dk: [Errno 60] Operation timed out
+INFO:root:Getting lists of files
+INFO:root:Starting ERDA
+WARNING:root:Exception encountered: Unable to connect to io.erda.dk: [Errno 60] Operation timed out
+INFO:root:Getting lists of files
+INFO:root:Starting ERDA
+WARNING:root:Exception encountered: Unable to connect to io.erda.dk: [Errno 60] Operation timed out
+INFO:root:Getting lists of files
+INFO:root:Starting ERDA
+WARNING:root:Exception encountered: Unable to connect to io.erda.dk: [Errno 60] Operation timed out
+INFO:root:Getting lists of files
+INFO:root:Starting ERDA
+WARNING:root:Exception encountered: Unable to connect to io.erda.dk: [Errno 60] Operation timed out
+INFO:root:Getting lists of files
+INFO:root:Starting ERDA
+WARNING:root:Exception encountered: Unable to connect to io.erda.dk: [Errno 60] Operation timed out
+INFO:root:Getting lists of files
+INFO:root:Starting ERDA
+WARNING:root:Exception encountered: Unable to connect to io.erda.dk: [Errno 60] Operation timed out
+INFO:root:Getting lists of files
+INFO:root:Starting ERDA
+WARNING:root:Exception encountered: Unable to connect to io.erda.dk: [Errno 60] Operation timed out
+INFO:root:Getting lists of files
+INFO:root:Starting ERDA
+WARNING:root:Exception encountered: Unable to connect to io.erda.dk: [Errno 60] Operation timed out
+INFO:root:Getting lists of files
+INFO:root:Starting ERDA
+WARNING:root:Exception encountered: Unable to connect to io.erda.dk: [Errno 60] Operation timed out
+INFO:root:Getting lists of files
+INFO:root:Starting ERDA
+WARNING:root:Exception encountered: Unable to connect to io.erda.dk: [Errno 60] Operation timed out
+INFO:root:Getting lists of files
+INFO:root:Starting ERDA
+WARNING:root:Exception encountered: Unable to connect to io.erda.dk: [Errno 60] Operation timed out
+INFO:root:Getting lists of files
+INFO:root:Starting ERDA
+WARNING:root:Exception encountered: Unable to connect to io.erda.dk: [Errno 60] Operation timed out
+INFO:root:Getting lists of files
+INFO:root:Starting ERDA
+WARNING:root:Exception encountered: Unable to connect to io.erda.dk: [Errno 60] Operation timed out
+INFO:root:Getting lists of files
+INFO:root:Starting ERDA
+WARNING:root:Exception encountered: Unable to connect to io.erda.dk: [Errno 60] Operation timed out
+INFO:root:Getting lists of files
+INFO:root:Starting ERDA
+WARNING:root:Exception encountered: Unable to connect to io.erda.dk: [Errno 60] Operation timed out
+INFO:root:Getting lists of files
+INFO:root:Starting ERDA
+WARNING:root:Exception encountered: Unable to connect to io.erda.dk: [Errno 60] Operation timed out
+INFO:root:Getting lists of files
+INFO:root:Starting ERDA
+WARNING:root:Exception encountered: Unable to connect to io.erda.dk: [Errno 60] Operation timed out
+INFO:root:Getting lists of files
+INFO:root:Starting ERDA
+WARNING:root:Exception encountered: Unable to connect to io.erda.dk: [Errno 60] Operation timed out
+INFO:root:Getting lists of files
+INFO:root:Starting ERDA
+WARNING:root:Exception encountered: Unable to connect to io.erda.dk: [Errno 60] Operation timed out
+INFO:root:Getting lists of files
+INFO:root:Starting ERDA
+WARNING:root:Exception encountered: Unable to connect to io.erda.dk: [Errno 60] Operation timed out
+INFO:root:Getting lists of files
+INFO:root:Starting ERDA
+WARNING:root:Exception encountered: Unable to connect to io.erda.dk: [Errno 60] Operation timed out
+INFO:root:Getting lists of files
+INFO:root:Starting ERDA
+WARNING:root:Exception encountered: Unable to connect to io.erda.dk: [Errno 60] Operation timed out
+INFO:root:Getting lists of files
+INFO:root:Starting ERDA
+WARNING:root:Exception encountered: Unable to connect to io.erda.dk: [Errno 60] Operation timed out
+INFO:root:Getting lists of files
+INFO:root:Starting ERDA
+WARNING:root:Exception encountered: Unable to connect to io.erda.dk: [Errno 60] Operation timed out
+INFO:root:Getting lists of files
+INFO:root:Starting ERDA
+WARNING:root:Exception encountered: Unable to connect to io.erda.dk: [Errno 60] Operation timed out
+INFO:root:Getting lists of files
+INFO:root:Starting ERDA
+WARNING:root:Exception encountered: Unable to connect to io.erda.dk: [Errno 60] Operation timed out
+INFO:root:Getting lists of files
+INFO:root:Starting ERDA
+WARNING:root:Exception encountered: Unable to connect to io.erda.dk: [Errno 60] Operation timed out
+INFO:root:Getting lists of files
+INFO:root:Starting ERDA
+WARNING:root:Exception encountered: Unable to connect to io.erda.dk: [Errno 60] Operation timed out
+INFO:root:Getting lists of files
+INFO:root:Starting ERDA
+WARNING:root:Exception encountered: Unable to connect to io.erda.dk: [Errno 60] Operation timed out
+INFO:root:Getting lists of files
+INFO:root:Starting ERDA
+WARNING:root:Exception encountered: Unable to connect to io.erda.dk: [Errno 60] Operation timed out
+INFO:root:Getting lists of files
+INFO:root:Starting ERDA
+WARNING:root:Exception encountered: Unable to connect to io.erda.dk: [Errno 60] Operation timed out
+INFO:root:Getting lists of files
+INFO:root:Starting ERDA
+WARNING:root:Exception encountered: Unable to connect to io.erda.dk: [Errno 60] Operation timed out
+INFO:root:Getting lists of files
+INFO:root:Starting ERDA
+WARNING:root:Exception encountered: Unable to connect to io.erda.dk: [Errno 60] Operation timed out
+INFO:root:Getting lists of files
+INFO:root:Starting ERDA
+WARNING:root:Exception encountered: Unable to connect to io.erda.dk: [Errno 60] Operation timed out
+INFO:root:Getting lists of files
+INFO:root:Starting ERDA
+WARNING:root:Exception encountered: Unable to connect to io.erda.dk: [Errno 60] Operation timed out
+INFO:root:Getting lists of files
+INFO:root:Starting ERDA
+WARNING:root:Exception encountered: Unable to connect to io.erda.dk: [Errno 60] Operation timed out
+INFO:root:Getting lists of files
+INFO:root:Starting ERDA
+INFO:root:Getting lists of files
+INFO:root:Starting ERDA
+INFO:paramiko.transport:Connected (version 2.0, client OpenSSH_7.4)
+INFO:paramiko.transport:Authentication (password) successful!
+INFO:paramiko.transport.sftp:[chan 0] Opened sftp connection (server version 3)
+INFO:root:looking at file: NHMD-273433_D_20181008_103114_Stacked_0.arw
+INFO:root:creating tiff
+ERROR:paramiko.transport:Socket exception: Operation timed out (60)
+INFO:paramiko.transport.sftp:[chan 0] sftp session closed.
+WARNING:root:Exception encountered: 
+INFO:root:Deleting /IMAGE_CACHE/NHMD-273433_D_20181008_103114_Stacked_0.tiff
+INFO:root:Getting lists of files
+INFO:root:Starting ERDA
+WARNING:root:Exception encountered: ('io.erda.dk', 22)
+INFO:root:Getting lists of files
+INFO:root:Starting ERDA
+WARNING:root:Exception encountered: ('io.erda.dk', 22)
+INFO:root:Getting lists of files
+INFO:root:Starting ERDA
+WARNING:root:Exception encountered: ('io.erda.dk', 22)
+INFO:root:Getting lists of files
+INFO:root:Starting ERDA
+WARNING:root:Exception encountered: ('io.erda.dk', 22)
+INFO:root:Getting lists of files
+INFO:root:Starting ERDA
+WARNING:root:Exception encountered: ('io.erda.dk', 22)
+INFO:root:Getting lists of files
+INFO:root:Starting ERDA
+WARNING:root:Exception encountered: ('io.erda.dk', 22)
+INFO:root:Getting lists of files
+INFO:root:Starting ERDA
+WARNING:root:Exception encountered: ('io.erda.dk', 22)
+INFO:root:Getting lists of files
+INFO:root:Starting ERDA
+WARNING:root:Exception encountered: ('io.erda.dk', 22)
+INFO:root:Getting lists of files
+INFO:root:Starting ERDA
+WARNING:root:Exception encountered: ('io.erda.dk', 22)
+INFO:root:Getting lists of files
+INFO:root:Starting ERDA
+WARNING:root:Exception encountered: ('io.erda.dk', 22)
+INFO:root:Getting lists of files
+INFO:root:Starting ERDA
+WARNING:root:Exception encountered: ('io.erda.dk', 22)
+INFO:root:Getting lists of files
+INFO:root:Starting ERDA
+WARNING:root:Exception encountered: ('io.erda.dk', 22)
+INFO:root:Getting lists of files
+INFO:root:Starting ERDA
+WARNING:root:Exception encountered: ('io.erda.dk', 22)
+INFO:root:Getting lists of files
+INFO:root:Starting ERDA
+WARNING:root:Exception encountered: ('io.erda.dk', 22)
+INFO:root:Getting lists of files
+INFO:root:Starting ERDA
+INFO:paramiko.transport:Connected (version 2.0, client OpenSSH_7.4)
+INFO:paramiko.transport:Authentication (password) successful!
+INFO:paramiko.transport.sftp:[chan 0] Opened sftp connection (server version 3)
+INFO:root:looking at file: NHMD-273433_D_20181008_103114_Stacked_0.arw
+INFO:root:creating tiff
+INFO:paramiko.transport.sftp:[chan 0] sftp session closed.
+WARNING:root:Exception encountered: [Errno 2] No such file or directory: '/IMAGE_CACHE/NHMD-273433_D_20181008_103114_Stacked_0.tiff'
+INFO:root:Getting lists of files
+INFO:root:Starting ERDA
+INFO:paramiko.transport:Connected (version 2.0, client OpenSSH_7.4)
+INFO:paramiko.transport:Authentication (password) successful!
+INFO:paramiko.transport.sftp:[chan 0] Opened sftp connection (server version 3)
+INFO:root:looking at file: NHMD-273433_D_20181008_103114_Stacked_0.arw
+INFO:root:creating tiff
+INFO:paramiko.transport.sftp:[chan 0] sftp session closed.
+WARNING:root:Exception encountered: [Errno 2] No such file or directory: '/IMAGE_CACHE/NHMD-273433_D_20181008_103114_Stacked_0.tiff'
+INFO:root:Getting lists of files
+INFO:root:Starting ERDA
+INFO:paramiko.transport:Connected (version 2.0, client OpenSSH_7.4)
+INFO:paramiko.transport:Authentication (password) successful!
+INFO:paramiko.transport.sftp:[chan 0] Opened sftp connection (server version 3)
+INFO:root:looking at file: NHMD-273433_D_20181008_103114_Stacked_0.arw
+INFO:root:creating tiff
+INFO:paramiko.transport.sftp:[chan 0] sftp session closed.
+WARNING:root:Exception encountered: [Errno 2] No such file or directory: '/IMAGE_CACHE/NHMD-273433_D_20181008_103114_Stacked_0.tiff'
+INFO:root:Getting lists of files
+INFO:root:Starting ERDA
+INFO:paramiko.transport:Connected (version 2.0, client OpenSSH_7.4)
+INFO:paramiko.transport:Authentication (password) successful!
+INFO:paramiko.transport.sftp:[chan 0] Opened sftp connection (server version 3)
+INFO:root:looking at file: NHMD-273433_D_20181008_103114_Stacked_0.arw
+INFO:root:creating tiff
+INFO:paramiko.transport.sftp:[chan 0] sftp session closed.
+WARNING:root:Exception encountered: [Errno 2] No such file or directory: '/IMAGE_CACHE/NHMD-273433_D_20181008_103114_Stacked_0.tiff'
+INFO:root:Getting lists of files
+INFO:root:Starting ERDA
+INFO:paramiko.transport:Connected (version 2.0, client OpenSSH_7.4)
+INFO:paramiko.transport:Authentication (password) successful!
+INFO:paramiko.transport.sftp:[chan 0] Opened sftp connection (server version 3)
+INFO:root:looking at file: NHMD-273433_D_20181008_103114_Stacked_0.arw
+INFO:root:creating tiff
+INFO:paramiko.transport.sftp:[chan 0] sftp session closed.
+WARNING:root:Exception encountered: [Errno 2] No such file or directory: '/IMAGE_CACHE/NHMD-273433_D_20181008_103114_Stacked_0.tiff'
+INFO:root:Getting lists of files
+INFO:root:Starting ERDA
+INFO:paramiko.transport:Connected (version 2.0, client OpenSSH_7.4)
+INFO:paramiko.transport:Authentication (password) successful!
+INFO:paramiko.transport.sftp:[chan 0] Opened sftp connection (server version 3)
+INFO:root:looking at file: NHMD-273433_D_20181008_103114_Stacked_0.arw
+INFO:root:creating tiff
+INFO:paramiko.transport.sftp:[chan 0] sftp session closed.
+WARNING:root:Exception encountered: [Errno 2] No such file or directory: '/IMAGE_CACHE/NHMD-273433_D_20181008_103114_Stacked_0.tiff'
+INFO:root:Getting lists of files
+INFO:root:Starting ERDA
+INFO:paramiko.transport:Connected (version 2.0, client OpenSSH_7.4)
+INFO:paramiko.transport:Authentication (password) successful!
+INFO:paramiko.transport.sftp:[chan 0] Opened sftp connection (server version 3)
+INFO:root:looking at file: NHMD-273433_D_20181008_103114_Stacked_0.arw
+INFO:root:creating tiff
+INFO:paramiko.transport.sftp:[chan 0] sftp session closed.
+WARNING:root:Exception encountered: [Errno 2] No such file or directory: '/IMAGE_CACHE/NHMD-273433_D_20181008_103114_Stacked_0.tiff'
+INFO:root:Getting lists of files
+INFO:root:Starting ERDA
+INFO:paramiko.transport:Connected (version 2.0, client OpenSSH_7.4)
+INFO:paramiko.transport:Authentication (password) successful!
+INFO:paramiko.transport.sftp:[chan 0] Opened sftp connection (server version 3)
+INFO:root:looking at file: NHMD-273433_D_20181008_103114_Stacked_0.arw
+INFO:root:creating tiff
+INFO:paramiko.transport.sftp:[chan 0] sftp session closed.
+WARNING:root:Exception encountered: [Errno 2] No such file or directory: '/IMAGE_CACHE/NHMD-273433_D_20181008_103114_Stacked_0.tiff'
+INFO:root:Getting lists of files
+INFO:root:Starting ERDA
+INFO:paramiko.transport:Connected (version 2.0, client OpenSSH_7.4)
+INFO:paramiko.transport:Authentication (password) successful!
+INFO:paramiko.transport.sftp:[chan 0] Opened sftp connection (server version 3)
+INFO:root:looking at file: NHMD-273433_D_20181008_103114_Stacked_0.arw
+INFO:root:creating tiff
+INFO:paramiko.transport.sftp:[chan 0] sftp session closed.
+WARNING:root:Exception encountered: [Errno 2] No such file or directory: '/IMAGE_CACHE/NHMD-273433_D_20181008_103114_Stacked_0.tiff'
+INFO:root:Getting lists of files
+INFO:root:Starting ERDA
+INFO:paramiko.transport:Connected (version 2.0, client OpenSSH_7.4)
+INFO:paramiko.transport:Authentication (password) successful!
+INFO:paramiko.transport.sftp:[chan 0] Opened sftp connection (server version 3)
+INFO:root:looking at file: NHMD-273433_D_20181008_103114_Stacked_0.arw
+INFO:root:creating tiff
+INFO:paramiko.transport.sftp:[chan 0] sftp session closed.
+WARNING:root:Exception encountered: [Errno 2] No such file or directory: '/IMAGE_CACHE/NHMD-273433_D_20181008_103114_Stacked_0.tiff'
+INFO:root:Getting lists of files
+INFO:root:Starting ERDA
+INFO:paramiko.transport:Connected (version 2.0, client OpenSSH_7.4)
+INFO:paramiko.transport:Authentication (password) successful!
+INFO:paramiko.transport.sftp:[chan 0] Opened sftp connection (server version 3)
+INFO:root:looking at file: NHMD-273433_D_20181008_103114_Stacked_0.arw
+INFO:root:creating tiff
+INFO:paramiko.transport.sftp:[chan 0] sftp session closed.
+WARNING:root:Exception encountered: [Errno 2] No such file or directory: '/IMAGE_CACHE/NHMD-273433_D_20181008_103114_Stacked_0.tiff'
+INFO:root:Getting lists of files
+INFO:root:Starting ERDA
+INFO:paramiko.transport:Connected (version 2.0, client OpenSSH_7.4)
+INFO:paramiko.transport:Authentication (password) successful!
+INFO:paramiko.transport.sftp:[chan 0] Opened sftp connection (server version 3)
+INFO:root:looking at file: NHMD-273433_D_20181008_103114_Stacked_0.arw
+INFO:root:creating tiff
+INFO:paramiko.transport.sftp:[chan 0] sftp session closed.
+WARNING:root:Exception encountered: [Errno 2] No such file or directory: '/IMAGE_CACHE/NHMD-273433_D_20181008_103114_Stacked_0.tiff'
+INFO:root:Getting lists of files
+INFO:root:Starting ERDA
+INFO:paramiko.transport:Connected (version 2.0, client OpenSSH_7.4)
+INFO:paramiko.transport:Authentication (password) successful!
+INFO:paramiko.transport.sftp:[chan 0] Opened sftp connection (server version 3)
+INFO:root:looking at file: NHMD-273433_D_20181008_103114_Stacked_0.arw
+INFO:root:creating tiff
+INFO:paramiko.transport.sftp:[chan 0] sftp session closed.
+WARNING:root:Exception encountered: [Errno 2] No such file or directory: '/IMAGE_CACHE/NHMD-273433_D_20181008_103114_Stacked_0.tiff'
+INFO:root:Getting lists of files
+INFO:root:Starting ERDA
+INFO:paramiko.transport:Connected (version 2.0, client OpenSSH_7.4)
+INFO:paramiko.transport:Authentication (password) successful!
+INFO:paramiko.transport.sftp:[chan 0] Opened sftp connection (server version 3)
+INFO:root:looking at file: NHMD-273433_D_20181008_103114_Stacked_0.arw
+INFO:root:creating tiff
+INFO:paramiko.transport.sftp:[chan 0] sftp session closed.
+WARNING:root:Exception encountered: [Errno 2] No such file or directory: '/IMAGE_CACHE/NHMD-273433_D_20181008_103114_Stacked_0.tiff'
+INFO:root:Getting lists of files
+INFO:root:Starting ERDA
+INFO:paramiko.transport:Connected (version 2.0, client OpenSSH_7.4)
+INFO:paramiko.transport:Authentication (password) successful!
+INFO:paramiko.transport.sftp:[chan 0] Opened sftp connection (server version 3)
+INFO:root:looking at file: NHMD-273433_D_20181008_103114_Stacked_0.arw
+INFO:root:creating tiff
+INFO:paramiko.transport.sftp:[chan 0] sftp session closed.
+WARNING:root:Exception encountered: [Errno 2] No such file or directory: '/IMAGE_CACHE/NHMD-273433_D_20181008_103114_Stacked_0.tiff'
+INFO:root:Getting lists of files
+INFO:root:Starting ERDA
+INFO:paramiko.transport:Connected (version 2.0, client OpenSSH_7.4)
+INFO:paramiko.transport:Authentication (password) successful!
+INFO:paramiko.transport.sftp:[chan 0] Opened sftp connection (server version 3)
+INFO:root:looking at file: NHMD-273433_D_20181008_103114_Stacked_0.arw
+INFO:root:creating tiff
+INFO:paramiko.transport.sftp:[chan 0] sftp session closed.
+WARNING:root:Exception encountered: [Errno 2] No such file or directory: '/IMAGE_CACHE/NHMD-273433_D_20181008_103114_Stacked_0.tiff'
+INFO:root:Getting lists of files
+INFO:root:Starting ERDA
+INFO:paramiko.transport:Connected (version 2.0, client OpenSSH_7.4)
+INFO:paramiko.transport:Authentication (password) successful!
+INFO:paramiko.transport.sftp:[chan 0] Opened sftp connection (server version 3)
+INFO:root:looking at file: NHMD-273433_D_20181008_103114_Stacked_0.arw
+INFO:root:creating tiff
+INFO:paramiko.transport.sftp:[chan 0] sftp session closed.
+WARNING:root:Exception encountered: [Errno 2] No such file or directory: '/IMAGE_CACHE/NHMD-273433_D_20181008_103114_Stacked_0.tiff'
+INFO:root:Getting lists of files
+INFO:root:Starting ERDA
+INFO:paramiko.transport:Connected (version 2.0, client OpenSSH_7.4)
+INFO:paramiko.transport:Authentication (password) successful!
+INFO:paramiko.transport.sftp:[chan 0] Opened sftp connection (server version 3)
+INFO:root:looking at file: NHMD-273433_D_20181008_103114_Stacked_0.arw
+INFO:root:creating tiff
+INFO:paramiko.transport.sftp:[chan 0] sftp session closed.
+WARNING:root:Exception encountered: [Errno 2] No such file or directory: '/IMAGE_CACHE/NHMD-273433_D_20181008_103114_Stacked_0.tiff'
+INFO:root:Getting lists of files
+INFO:root:Starting ERDA
+INFO:paramiko.transport:Connected (version 2.0, client OpenSSH_7.4)
+INFO:paramiko.transport:Authentication (password) successful!
+INFO:paramiko.transport.sftp:[chan 0] Opened sftp connection (server version 3)
+INFO:root:looking at file: NHMD-273433_D_20181008_103114_Stacked_0.arw
+INFO:root:creating tiff
+INFO:paramiko.transport.sftp:[chan 0] sftp session closed.
+WARNING:root:Exception encountered: [Errno 2] No such file or directory: '/IMAGE_CACHE/NHMD-273433_D_20181008_103114_Stacked_0.tiff'
+INFO:root:Getting lists of files
+INFO:root:Starting ERDA
+INFO:paramiko.transport:Connected (version 2.0, client OpenSSH_7.4)
+INFO:paramiko.transport:Authentication (password) successful!
+INFO:paramiko.transport.sftp:[chan 0] Opened sftp connection (server version 3)
+INFO:root:looking at file: NHMD-273433_D_20181008_103114_Stacked_0.arw
+INFO:root:creating tiff
+INFO:paramiko.transport.sftp:[chan 0] sftp session closed.
+WARNING:root:Exception encountered: [Errno 2] No such file or directory: '/IMAGE_CACHE/NHMD-273433_D_20181008_103114_Stacked_0.tiff'
+INFO:root:Getting lists of files
+INFO:root:Starting ERDA
+INFO:paramiko.transport:Connected (version 2.0, client OpenSSH_7.4)
+INFO:paramiko.transport:Authentication (password) successful!
+INFO:paramiko.transport.sftp:[chan 0] Opened sftp connection (server version 3)
+INFO:root:looking at file: NHMD-273433_D_20181008_103114_Stacked_0.arw
+INFO:root:creating tiff
+INFO:paramiko.transport.sftp:[chan 0] sftp session closed.
+WARNING:root:Exception encountered: [Errno 2] No such file or directory: '/IMAGE_CACHE/NHMD-273433_D_20181008_103114_Stacked_0.tiff'
+INFO:root:Getting lists of files
+INFO:root:Starting ERDA
+INFO:paramiko.transport:Connected (version 2.0, client OpenSSH_7.4)
+INFO:paramiko.transport:Authentication (password) successful!
+INFO:paramiko.transport.sftp:[chan 0] Opened sftp connection (server version 3)
+INFO:root:looking at file: NHMD-273433_D_20181008_103114_Stacked_0.arw
+INFO:root:creating tiff
+INFO:paramiko.transport.sftp:[chan 0] sftp session closed.
+WARNING:root:Exception encountered: [Errno 2] No such file or directory: '/IMAGE_CACHE/NHMD-273433_D_20181008_103114_Stacked_0.tiff'
+INFO:root:Getting lists of files
+INFO:root:Starting ERDA
+INFO:paramiko.transport:Connected (version 2.0, client OpenSSH_7.4)
+INFO:paramiko.transport:Authentication (password) successful!
+INFO:paramiko.transport.sftp:[chan 0] Opened sftp connection (server version 3)
+INFO:root:looking at file: NHMD-273433_D_20181008_103114_Stacked_0.arw
+INFO:root:creating tiff
+INFO:paramiko.transport.sftp:[chan 0] sftp session closed.
+WARNING:root:Exception encountered: [Errno 2] No such file or directory: '/IMAGE_CACHE/NHMD-273433_D_20181008_103114_Stacked_0.tiff'
+INFO:root:Getting lists of files
+INFO:root:Starting ERDA
+INFO:paramiko.transport:Connected (version 2.0, client OpenSSH_7.4)
+INFO:paramiko.transport:Authentication (password) successful!
+INFO:paramiko.transport.sftp:[chan 0] Opened sftp connection (server version 3)
+INFO:root:looking at file: NHMD-273433_D_20181008_103114_Stacked_0.arw
+INFO:root:creating tiff
+INFO:paramiko.transport.sftp:[chan 0] sftp session closed.
+WARNING:root:Exception encountered: [Errno 2] No such file or directory: '/IMAGE_CACHE/NHMD-273433_D_20181008_103114_Stacked_0.tiff'
+INFO:root:Getting lists of files
+INFO:root:Starting ERDA
+INFO:paramiko.transport:Connected (version 2.0, client OpenSSH_7.4)
+INFO:paramiko.transport:Authentication (password) successful!
+INFO:paramiko.transport.sftp:[chan 0] Opened sftp connection (server version 3)
+INFO:root:looking at file: NHMD-273433_D_20181008_103114_Stacked_0.arw
+INFO:root:creating tiff
+INFO:paramiko.transport.sftp:[chan 0] sftp session closed.
+WARNING:root:Exception encountered: [Errno 2] No such file or directory: '/IMAGE_CACHE/NHMD-273433_D_20181008_103114_Stacked_0.tiff'
+INFO:root:Getting lists of files
+INFO:root:Starting ERDA
+INFO:paramiko.transport:Connected (version 2.0, client OpenSSH_7.4)
+INFO:paramiko.transport:Authentication (password) successful!
+INFO:paramiko.transport.sftp:[chan 0] Opened sftp connection (server version 3)
+INFO:root:looking at file: NHMD-273433_D_20181008_103114_Stacked_0.arw
+INFO:root:creating tiff
+INFO:paramiko.transport.sftp:[chan 0] sftp session closed.
+WARNING:root:Exception encountered: [Errno 2] No such file or directory: '/IMAGE_CACHE/NHMD-273433_D_20181008_103114_Stacked_0.tiff'
+INFO:root:Getting lists of files
+INFO:root:Starting ERDA
+INFO:paramiko.transport:Connected (version 2.0, client OpenSSH_7.4)
+INFO:paramiko.transport:Authentication (password) successful!
+INFO:paramiko.transport.sftp:[chan 0] Opened sftp connection (server version 3)
+INFO:root:looking at file: NHMD-273433_D_20181008_103114_Stacked_0.arw
+INFO:root:creating tiff
+INFO:paramiko.transport.sftp:[chan 0] sftp session closed.
+WARNING:root:Exception encountered: [Errno 2] No such file or directory: '/IMAGE_CACHE/NHMD-273433_D_20181008_103114_Stacked_0.tiff'
+INFO:root:Getting lists of files
+INFO:root:Starting ERDA
+INFO:paramiko.transport:Connected (version 2.0, client OpenSSH_7.4)
+INFO:paramiko.transport:Authentication (password) successful!
+INFO:paramiko.transport.sftp:[chan 0] Opened sftp connection (server version 3)
+INFO:root:looking at file: NHMD-273433_D_20181008_103114_Stacked_0.arw
+INFO:root:creating tiff
+INFO:paramiko.transport.sftp:[chan 0] sftp session closed.
+WARNING:root:Exception encountered: [Errno 2] No such file or directory: '/IMAGE_CACHE/NHMD-273433_D_20181008_103114_Stacked_0.tiff'
+INFO:root:Getting lists of files
+INFO:root:Starting ERDA
+INFO:paramiko.transport:Connected (version 2.0, client OpenSSH_7.4)
+INFO:paramiko.transport:Authentication (password) successful!
+INFO:paramiko.transport.sftp:[chan 0] Opened sftp connection (server version 3)
+INFO:root:looking at file: NHMD-273433_D_20181008_103114_Stacked_0.arw
+INFO:root:creating tiff
+INFO:paramiko.transport.sftp:[chan 0] sftp session closed.
+WARNING:root:Exception encountered: [Errno 2] No such file or directory: '/IMAGE_CACHE/NHMD-273433_D_20181008_103114_Stacked_0.tiff'
+INFO:root:Getting lists of files
+INFO:root:Starting ERDA
+INFO:paramiko.transport:Connected (version 2.0, client OpenSSH_7.4)
+INFO:paramiko.transport:Authentication (password) successful!
+INFO:paramiko.transport.sftp:[chan 0] Opened sftp connection (server version 3)
+INFO:root:looking at file: NHMD-273433_D_20181008_103114_Stacked_0.arw
+INFO:root:creating tiff
+INFO:paramiko.transport.sftp:[chan 0] sftp session closed.
+WARNING:root:Exception encountered: [Errno 2] No such file or directory: '/IMAGE_CACHE/NHMD-273433_D_20181008_103114_Stacked_0.tiff'
+INFO:root:Getting lists of files
+INFO:root:Starting ERDA
+INFO:paramiko.transport:Connected (version 2.0, client OpenSSH_7.4)
+INFO:paramiko.transport:Authentication (password) successful!
+INFO:paramiko.transport.sftp:[chan 0] Opened sftp connection (server version 3)
+INFO:root:looking at file: NHMD-273433_D_20181008_103114_Stacked_0.arw
+INFO:root:creating tiff
+INFO:paramiko.transport.sftp:[chan 0] sftp session closed.
+WARNING:root:Exception encountered: [Errno 2] No such file or directory: '/IMAGE_CACHE/NHMD-273433_D_20181008_103114_Stacked_0.tiff'
+INFO:root:Getting lists of files
+INFO:root:Starting ERDA
+INFO:paramiko.transport:Connected (version 2.0, client OpenSSH_7.4)
+INFO:paramiko.transport:Authentication (password) successful!
+INFO:paramiko.transport.sftp:[chan 0] Opened sftp connection (server version 3)
+INFO:root:looking at file: NHMD-273433_D_20181008_103114_Stacked_0.arw
+INFO:root:creating tiff
+INFO:paramiko.transport.sftp:[chan 0] sftp session closed.
+WARNING:root:Exception encountered: [Errno 2] No such file or directory: '/IMAGE_CACHE/NHMD-273433_D_20181008_103114_Stacked_0.tiff'
+INFO:root:Getting lists of files
+INFO:root:Starting ERDA
+INFO:paramiko.transport:Connected (version 2.0, client OpenSSH_7.4)
+INFO:paramiko.transport:Authentication (password) successful!
+INFO:paramiko.transport.sftp:[chan 0] Opened sftp connection (server version 3)
+INFO:root:looking at file: NHMD-273433_D_20181008_103114_Stacked_0.arw
+INFO:root:creating tiff
+INFO:paramiko.transport.sftp:[chan 0] sftp session closed.
+WARNING:root:Exception encountered: [Errno 2] No such file or directory: '/IMAGE_CACHE/NHMD-273433_D_20181008_103114_Stacked_0.tiff'
+INFO:root:Getting lists of files
+INFO:root:Starting ERDA
+INFO:paramiko.transport:Connected (version 2.0, client OpenSSH_7.4)
+INFO:paramiko.transport:Authentication (password) successful!
+INFO:paramiko.transport.sftp:[chan 0] Opened sftp connection (server version 3)
+INFO:root:looking at file: NHMD-273433_D_20181008_103114_Stacked_0.arw
+INFO:root:creating tiff
+INFO:paramiko.transport.sftp:[chan 0] sftp session closed.
+WARNING:root:Exception encountered: [Errno 2] No such file or directory: '/IMAGE_CACHE/NHMD-273433_D_20181008_103114_Stacked_0.tiff'
+INFO:root:Getting lists of files
+INFO:root:Starting ERDA
+INFO:paramiko.transport:Connected (version 2.0, client OpenSSH_7.4)
+INFO:paramiko.transport:Authentication (password) successful!
+INFO:paramiko.transport.sftp:[chan 0] Opened sftp connection (server version 3)
+INFO:root:looking at file: NHMD-273433_D_20181008_103114_Stacked_0.arw
+INFO:root:creating tiff
+INFO:paramiko.transport.sftp:[chan 0] sftp session closed.
+WARNING:root:Exception encountered: [Errno 2] No such file or directory: '/IMAGE_CACHE/NHMD-273433_D_20181008_103114_Stacked_0.tiff'
+INFO:root:Getting lists of files
+INFO:root:Starting ERDA
+INFO:paramiko.transport:Connected (version 2.0, client OpenSSH_7.4)
+INFO:paramiko.transport:Authentication (password) successful!
+INFO:paramiko.transport.sftp:[chan 0] Opened sftp connection (server version 3)
+INFO:root:looking at file: NHMD-273433_D_20181008_103114_Stacked_0.arw
+INFO:root:creating tiff
+INFO:paramiko.transport.sftp:[chan 0] sftp session closed.
+WARNING:root:Exception encountered: [Errno 2] No such file or directory: '/IMAGE_CACHE/NHMD-273433_D_20181008_103114_Stacked_0.tiff'
+INFO:root:Getting lists of files
+INFO:root:Starting ERDA
+INFO:paramiko.transport:Connected (version 2.0, client OpenSSH_7.4)
+INFO:paramiko.transport:Authentication (password) successful!
+INFO:paramiko.transport.sftp:[chan 0] Opened sftp connection (server version 3)
+INFO:root:looking at file: NHMD-273433_D_20181008_103114_Stacked_0.arw
+INFO:root:creating tiff
+INFO:paramiko.transport.sftp:[chan 0] sftp session closed.
+WARNING:root:Exception encountered: [Errno 2] No such file or directory: '/IMAGE_CACHE/NHMD-273433_D_20181008_103114_Stacked_0.tiff'
+INFO:root:Getting lists of files
+INFO:root:Starting ERDA
+INFO:paramiko.transport:Connected (version 2.0, client OpenSSH_7.4)
+INFO:paramiko.transport:Authentication (password) successful!
+INFO:paramiko.transport.sftp:[chan 0] Opened sftp connection (server version 3)
+INFO:root:looking at file: NHMD-273433_D_20181008_103114_Stacked_0.arw
+INFO:root:creating tiff
+INFO:paramiko.transport.sftp:[chan 0] sftp session closed.
+WARNING:root:Exception encountered: [Errno 2] No such file or directory: '/IMAGE_CACHE/NHMD-273433_D_20181008_103114_Stacked_0.tiff'
+INFO:root:Getting lists of files
+INFO:root:Starting ERDA
+INFO:paramiko.transport:Connected (version 2.0, client OpenSSH_7.4)
+INFO:paramiko.transport:Authentication (password) successful!
+INFO:paramiko.transport.sftp:[chan 0] Opened sftp connection (server version 3)
+INFO:root:looking at file: NHMD-273433_D_20181008_103114_Stacked_0.arw
+INFO:root:creating tiff
+INFO:paramiko.transport.sftp:[chan 0] sftp session closed.
+WARNING:root:Exception encountered: [Errno 2] No such file or directory: '/IMAGE_CACHE/NHMD-273433_D_20181008_103114_Stacked_0.tiff'
+INFO:root:Getting lists of files
+INFO:root:Starting ERDA
+INFO:paramiko.transport:Connected (version 2.0, client OpenSSH_7.4)
+INFO:paramiko.transport:Authentication (password) successful!
+INFO:paramiko.transport.sftp:[chan 0] Opened sftp connection (server version 3)
+INFO:root:looking at file: NHMD-273433_D_20181008_103114_Stacked_0.arw
+INFO:root:creating tiff
+INFO:paramiko.transport.sftp:[chan 0] sftp session closed.
+WARNING:root:Exception encountered: [Errno 2] No such file or directory: '/IMAGE_CACHE/NHMD-273433_D_20181008_103114_Stacked_0.tiff'
+INFO:root:Getting lists of files
+INFO:root:Starting ERDA
+INFO:paramiko.transport:Connected (version 2.0, client OpenSSH_7.4)
+INFO:paramiko.transport:Authentication (password) successful!
+INFO:paramiko.transport.sftp:[chan 0] Opened sftp connection (server version 3)
+INFO:root:looking at file: NHMD-273433_D_20181008_103114_Stacked_0.arw
+INFO:root:creating tiff
+INFO:paramiko.transport.sftp:[chan 0] sftp session closed.
+WARNING:root:Exception encountered: [Errno 2] No such file or directory: '/IMAGE_CACHE/NHMD-273433_D_20181008_103114_Stacked_0.tiff'
+INFO:root:Getting lists of files
+INFO:root:Starting ERDA
+INFO:paramiko.transport:Connected (version 2.0, client OpenSSH_7.4)
+INFO:paramiko.transport:Authentication (password) successful!
+INFO:paramiko.transport.sftp:[chan 0] Opened sftp connection (server version 3)
+INFO:root:Getting lists of files
+INFO:root:Starting ERDA
+WARNING:root:Exception encountered: ('io.erda.dk', 22)
+INFO:root:Getting lists of files
+INFO:root:Starting ERDA
+WARNING:root:Exception encountered: ('io.erda.dk', 22)
+INFO:root:Getting lists of files
+INFO:root:Starting ERDA
+INFO:paramiko.transport:Connected (version 2.0, client OpenSSH_7.4)
+INFO:paramiko.transport:Authentication (password) successful!
+INFO:paramiko.transport.sftp:[chan 0] Opened sftp connection (server version 3)
+INFO:root:looking at file: NHMD-273433_D_20181008_103114_Stacked_0.arw
+INFO:root:creating tiff
+INFO:paramiko.transport.sftp:[chan 0] sftp session closed.
+WARNING:root:Exception encountered: [Errno 2] No such file or directory: '/IMAGE_CACHE/NHMD-273433_D_20181008_103114_Stacked_0.tiff'
+INFO:root:Getting lists of files
+INFO:root:Starting ERDA
+INFO:paramiko.transport:Connected (version 2.0, client OpenSSH_7.4)
+INFO:paramiko.transport:Authentication (password) successful!
+INFO:paramiko.transport.sftp:[chan 0] Opened sftp connection (server version 3)
+INFO:root:looking at file: NHMD-273433_D_20181008_103114_Stacked_0.arw
+INFO:root:creating tiff
+INFO:root:looking at file: NHMD-273433_D_20181008_103114_Stacked_0.arw
+INFO:root:creating tiff

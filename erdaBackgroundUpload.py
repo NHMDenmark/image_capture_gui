@@ -9,6 +9,7 @@
 #delete local copy
 import os
 import pysftp
+import logging
 import paramiko
 import subprocess
 
@@ -18,6 +19,8 @@ from guis.settings.local_settings import (SFTP_PUBLIC_KEY, ERDA_USERNAME,
                                      ERDA_SFTP_PASSWORD, ERDA_HOST,
                                      ERDA_PORT, ERDA_FOLDER, DUMP_FOLDER, 
                                      CACHE_FOLDER, STORAGE_FOLDER)
+
+
 
 class ERDA():
     def __init__(self):
@@ -44,10 +47,10 @@ class ERDA():
         cacheFile = cachePath.split('/')[-1]
         
         if cacheFile in files:
-            print('ERDA Upload okay for %s'%cacheFile)
+            logging.info('ERDA Upload okay for %s'%cacheFile)
             return True
         else:
-            print('Something messed up %s '%cacheFile)
+            logging.info('Something messed up %s '%cacheFile)
             return False
     
     def close(self):
@@ -86,55 +89,60 @@ def deleteNonARWFilesFromLocalCache():
     for local_file in local_files:
         if (not local_file.endswith('.arw')) & (not local_file.endswith('.DS_Store')):
             path = os.path.join(CACHE_FOLDER, local_file)
-            print('Deleting %s'%path)
+            logging.info('Deleting %s'%path)
             deleteFile(path)
     
 if __name__ == '__main__':
-    #while True:
-    #    sleep(1)
-    #    try:
-    deleteNonARWFilesFromLocalCache()
-    print('starting ERDA')
-    erda = ERDA()
-    
-    print('Getting lists of files')
-    local_files = getARWFiles(CACHE_FOLDER)
-    erda_files = erda.getFiles(ERDA_FOLDER)
+    while True:
+        sleep(1)
+        try:
+            logging.basicConfig(filename='/Users/robertahunt/Documents/gui/logs/erda_upload_log.txt', level=logging.INFO)
+            
+            deleteNonARWFilesFromLocalCache()
 
-    
-    for local_file in local_files:
-        print('looking at file: %s'%local_file)
-        arwCachePath = os.path.join(CACHE_FOLDER, local_file)
-        print('creating tiff')
-        tiffCachePath = createTiff(arwCachePath)
-        tiff_name = tiffCachePath.split('/')[-1]
+            logging.info('Getting lists of files')
+            local_files = getARWFiles(CACHE_FOLDER)
+            
+            if len(local_files):
+                logging.info('Starting ERDA')
+                erda = ERDA()
+            
+                erda_files = erda.getFiles(ERDA_FOLDER)
         
-        arwLocalPath = os.path.join(STORAGE_FOLDER, local_file)
-        tiffLocalPath = os.path.join(STORAGE_FOLDER, tiff_name)
-        
-        #what happens if file already uploaded
-        
-        
-        arwERDAPath = os.path.join(ERDA_FOLDER, local_file)
-        tiffERDAPath = os.path.join(ERDA_FOLDER, tiff_name)
-        
-        erda.upload(tiffCachePath, tiffERDAPath)
-        uploadedTiff = erda.checkUploaded(tiffERDAPath, tiffCachePath)
-        
-        erda.upload(arwCachePath, arwERDAPath)
-        uploadedARW = erda.checkUploaded(arwERDAPath, arwCachePath)
-        
-        
-        if uploadedARW & uploadedTiff:
-            print('Deleting Files')
-            deleteFile(arwCachePath)
-            deleteFile(tiffCachePath)
-        
-    erda.close()
-        #except Exception as ex:
-        #    if 'erda' in locals():
-        #        if hasattr(erda, 'sftp'):
-        #            erda.sftp.close()
+            
+                for local_file in local_files:
+                    logging.info('looking at file: %s'%local_file)
+                    arwCachePath = os.path.join(CACHE_FOLDER, local_file)
+                    logging.info('creating tiff')
+                    tiffCachePath = createTiff(arwCachePath)
+                    tiff_name = tiffCachePath.split('/')[-1]
                     
-        #    print(str(ex))
+                    arwLocalPath = os.path.join(STORAGE_FOLDER, local_file)
+                    tiffLocalPath = os.path.join(STORAGE_FOLDER, tiff_name)
+                    
+                    #what happens if file already uploaded
+                    
+                    
+                    arwERDAPath = os.path.join(ERDA_FOLDER, local_file)
+                    tiffERDAPath = os.path.join(ERDA_FOLDER, tiff_name)
+                    
+                    erda.upload(tiffCachePath, tiffERDAPath)
+                    uploadedTiff = erda.checkUploaded(tiffERDAPath, tiffCachePath)
+                    
+                    erda.upload(arwCachePath, arwERDAPath)
+                    uploadedARW = erda.checkUploaded(arwERDAPath, arwCachePath)
+                    
+                    
+                    if uploadedARW & uploadedTiff:
+                        logging.info('Deleting cached files')
+                        deleteFile(arwCachePath)
+                        deleteFile(tiffCachePath)
+                    
+                erda.close()
+        except Exception as ex:
+            if 'erda' in locals():
+                if hasattr(erda, 'sftp'):
+                    erda.sftp.close()
+                    
+            logging.warning('Exception encountered: '+str(ex))
     

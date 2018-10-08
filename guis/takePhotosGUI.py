@@ -204,7 +204,7 @@ class takePhotosGUI(basicGUI):
                 tempName = 'Stacked_'+str(i)+'.arw'
                 self.takePhoto(imgName=tempName)
                 time.sleep(0.1)
-                self.arduino.moveCamera('d','0.1')
+                self.arduino.moveCamera('d','0.2')
                 time.sleep(1)
                 
                 newImgName = 'NHMD-' + QRCode + underside + '_' + timestamp + '_Stacked_' + str(i) + '.arw'
@@ -224,7 +224,7 @@ class takePhotosGUI(basicGUI):
                 
             progress.update(99, 'Moving Camera Back Into Place')
 
-            self.arduino.moveCamera('u',str(n_photos*0.1))
+            self.arduino.moveCamera('u',str(n_photos*0.2))
             self.warn('Done Taking Photos')
 
         progress._close()
