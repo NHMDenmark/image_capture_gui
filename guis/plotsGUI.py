@@ -6,9 +6,11 @@ Created on Mon Sep 10 09:18:50 2018
 @author: robertahunt
 """
 import os
+import gc
 import cv2
 import time
 import numpy as np
+import matplotlib.pyplot as plt
 
 from PyQt5 import QtCore
 from matplotlib.figure import Figure
@@ -35,28 +37,34 @@ class plotsGUI(basicGUI):
         self._img_timer = QtCore.QTimer()
         self._img_timer.timeout.connect(self._update_img)
         self._img_timer.start(500)
+        
+        self.hist_timer = QtCore.QTimer()
+        self.hist_timer.timeout.connect(self._update_hist)
+        self.hist_timer.start(600)
 
         self.initUI()
         
     def initUI(self):
-        hist_canvas = FigureCanvas(Figure(figsize=(5, 3)))
-        contrast_canvas = FigureCanvas(Figure(figsize=(5, 3)))
+        self.hist_fig = Figure(figsize=(5,3))
+        #self.hist_fig, self.hist_ax = plt.subplots(figsize=(5,3))
+        self.hist_canvas = FigureCanvas(self.hist_fig)
+        self.hist_canvas.setMinimumSize(self.width, self.height)
+        self.hist_ax = self.hist_canvas.figure.subplots()
+        #contrast_canvas = FigureCanvas(Figure(figsize=(5, 3)))
         
-        hist_canvas.setMinimumSize(self.width, self.height)
-        contrast_canvas.setMinimumSize(self.width, self.height)
+        #contrast_canvas.setMinimumSize(self.width, self.height)
         
-        self._hist_ax = hist_canvas.figure.subplots()
-        self.histTimer = hist_canvas.new_timer(
-            500, [(self._update_hist, (), {})])
-        self.histTimer.start()
+        #self.histTimer = hist_canvas.new_timer(
+        #    500, [(self._update_hist, (), {})])
+        #self.histTimer.start()
         
-        self._contrast_ax = contrast_canvas.figure.subplots()
-        self.contrastTimer = contrast_canvas.new_timer(
-            500, [(self._update_contrast, (), {})])
-        self.contrastTimer.start()
+        #self._contrast_ax = contrast_canvas.figure.subplots()
+        #self.contrastTimer = contrast_canvas.new_timer(
+        #    500, [(self._update_contrast, (), {})])
+        #self.contrastTimer.start()
 
-        self.grid.addWidget(hist_canvas, 0, 0)
-        self.grid.addWidget(contrast_canvas, 1, 0)
+        #self.grid.addWidget(contrast_canvas, 1, 0)
+        self.grid.addWidget(self.hist_canvas, 0, 0)
         self.setLayout(self.grid)
    
     def _update_img(self):
@@ -67,12 +75,16 @@ class plotsGUI(basicGUI):
     
     def _update_hist(self):
         try:
-            self._hist_ax.clear()
+            gray = cv2.cvtColor(self.img, cv2.COLOR_BGR2GRAY).ravel()
             
-            gray = cv2.cvtColor(self.img, cv2.COLOR_BGR2GRAY)
-            self._hist_ax.hist(gray.ravel(), 256, [0,256])
-            self._hist_ax.set_title('Histogram')
-            self._hist_ax.figure.canvas.draw()     
+            #self.rmhist()
+            self.hist_ax.clear()
+            #self.hist_ax.figure.canvas.clear()
+            #self.hist_ax = self.hist_canvas.figure.subplots()
+            
+            self.hist_ax.hist(gray, 256, [0,256])
+            self.hist_ax.set_title('Histogram')
+            self.hist_ax.figure.canvas.draw()     
         except:
             pass
    
@@ -82,11 +94,16 @@ class plotsGUI(basicGUI):
             
             contrast = cv2.Laplacian(self.img, cv2.CV_64F).var()
             
-            self.contrast_history = np.roll(self.contrast_history, -1)
-            self.contrast_history[-1] = contrast
+            self.contrast_history = np.append(self.contrast_history[1:], [contrast])
             
             self._contrast_ax.plot(self.contrast_x_axis, self.contrast_history)
             self._contrast_ax.set_title('Contrast')
             self._contrast_ax.figure.canvas.draw()
         except:
             pass
+        
+    def rmhist(self):
+        self._hist_ax.close()
+        self._hist_ax.deleteLater()
+        gc.collect()
+        

@@ -31,17 +31,16 @@ class GUI(basicGUI):
 
         self.progress.update(20,'Getting Coffee..')
         self.instructions = instructionsGUI()
-        print('Done instructions')
         self.progress.update(30,'Checking Appendages..')
         self.checks = checksGUI()
       
         self.progress.update(50,'Getting Dressed..')
         self.live_view = liveViewGUI()
-        self.plots = plotsGUI()
+        #self.plots = plotsGUI()
         self.takePhoto = takePhotosGUI()
         self.config = configGUI()
         #self.calibrate = calibrateGUI()
-        self.progress.close()
+        #self.progress.close()
         self.initUI()
         
         
@@ -51,7 +50,7 @@ class GUI(basicGUI):
   
         self.grid.addWidget(self.instructions, 0, 0)
         self.grid.addWidget(self.config, 1, 0, 2, 1)
-        self.grid.addWidget(self.plots, 3, 0, 6, 1)
+        #self.grid.addWidget(self.plots, 3, 0, 6, 1)
         self.grid.addWidget(self.live_view, 0, 1, 8, 1)
         self.grid.addWidget(self.takePhoto, 8, 1, 1, 1)
         

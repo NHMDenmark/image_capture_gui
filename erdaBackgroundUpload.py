@@ -102,6 +102,7 @@ if __name__ == '__main__':
 
             logging.info('Getting lists of files')
             local_files = getARWFiles(CACHE_FOLDER)
+            logging.info(local_files)
             
             if len(local_files):
                 logging.info('Starting ERDA')
