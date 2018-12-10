@@ -17,8 +17,8 @@ class instructionsGUI(basicGUI):
         self.inst_desc = QtWidgets.QLabel(
 '''
 If you have any questions, 
-shoot Roberta a mail: ngw861@alumni.ku.dk. 
-or if you want a timely reply, call her: 91 93 20 26
+shoot Roberta a mail: XX@XX.dk. 
+or if you want a timely reply, call her: XX XX XX XX
 
 
 When Leaving:
